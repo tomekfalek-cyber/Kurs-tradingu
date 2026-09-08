@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analiza Techniczna — Pełny Kurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c1210; --panel: #121a17; --panel-2: #16211d; --line: #23332c;
+    --ink: #e9efe9; --ink-dim: #a9b8ae; --up: #4fd68c; --down: #e0685c;
+    --amber: #e0b15c; --focus: #7fd9ff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans', sans-serif; line-height:1.65; font-size:16px; }
+  h1,h2,h3,h4{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em;}
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color: var(--focus); }
+  :focus-visible{ outline:2px solid var(--focus); outline-offset:3px; }
+  .wrap{ display:grid; grid-template-columns: 270px 1fr; max-width:1200px; margin:0 auto; }
+  @media (max-width: 900px){ .wrap{ grid-template-columns: 1fr; } }
+  nav.side{ position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:28px 18px; border-right:1px solid var(--line); }
+  @media (max-width:900px){ nav.side{ position:static; height:auto; border-right:none; border-bottom:1px solid var(--line);} }
+  nav.side .brand{ font-family:'Fraunces',serif; font-size:1.05rem; color:var(--amber); margin-bottom:22px; display:flex; align-items:center; gap:8px;}
+  nav.side .brand .dot{ width:8px; height:8px; border-radius:50%; background:var(--up); box-shadow:0 0 8px var(--up);}
+  nav.side ol{ list-style:none; counter-reset: sec; display:flex; flex-direction:column; gap:1px;}
+  nav.side li{ counter-increment: sec; }
+  nav.side a{ display:flex; gap:10px; text-decoration:none; color:var(--ink-dim); font-size:0.85rem; padding:6px 8px; border-radius:6px; transition:background .15s, color .15s;}
+  nav.side a::before{ content: counter(sec, decimal-leading-zero); font-family:'IBM Plex Mono',monospace; color:var(--line); font-size:0.75rem;}
+  nav.side a:hover, nav.side a:focus-visible{ background:var(--panel); color:var(--ink); }
+  main{ padding: 0 0 80px 0; }
+  .hero{ padding: 64px 40px 46px 40px; border-bottom:1px solid var(--line);
+    background: radial-gradient(1200px 400px at 80% -10%, rgba(79,214,140,0.08), transparent 60%), var(--bg);
+    position:relative; overflow:hidden; }
+  @media (max-width:640px){ .hero{ padding: 44px 20px 34px 20px; } }
+  .kicker{ font-family:'IBM Plex Mono',monospace; color:var(--amber); font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:16px;}
+  .hero h1{ font-size: clamp(2rem, 4.4vw, 3.4rem); line-height:1.06; max-width: 16ch;}
+  .hero p.lead{ margin-top:18px; max-width:60ch; color:var(--ink-dim); font-size:1.05rem;}
+  .hero .meta{ margin-top:18px; display:flex; gap:18px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-dim);}
+  .hero .meta b{ color:var(--up); }
+  .hero-chart{ margin-top: 34px; }
+  section{ padding: 54px 40px; border-bottom:1px solid var(--line); scroll-margin-top: 20px; position:relative;}
+  @media (max-width:640px){ section{ padding: 40px 20px; } }
+  section .eyebrow{ font-family:'IBM Plex Mono',monospace; color:var(--up); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px;}
+  section h2{ font-size: clamp(1.5rem, 2.6vw, 2.1rem); margin-bottom: 16px;}
+  section h3{ font-size:1.15rem; color:var(--amber); margin: 30px 0 10px 0; font-weight:600;}
+  section h4{ font-size:1rem; color:var(--ink); margin: 18px 0 6px 0; font-weight:600;}
+  section p{ max-width:72ch; color:var(--ink-dim); margin-bottom:14px;}
+  section ul, section ol.reg{ max-width:72ch; color:var(--ink-dim); margin: 10px 0 18px 22px; }
+  section li{ margin-bottom:7px; }
+  strong{ color:var(--ink); font-weight:600;}
+  .panel{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding: 22px 24px; margin: 18px 0 26px 0; max-width: 780px; }
+  .panel.warn{ border-color: rgba(224,104,92,0.4); }
+  .panel .label{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--amber); margin-bottom:8px; display:block;}
+  .panel.warn .label{ color:var(--down); }
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:900px; }
+  .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; max-width:900px; }
+  @media (max-width:700px){ .grid-2, .grid-3{ grid-template-columns:1fr; } }
+  figure{ margin: 18px 0 28px 0; max-width: 820px; }
+  figure svg{ width:100%; height:auto; display:block; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; }
+  figcaption{ font-size:0.85rem; color:var(--ink-dim); margin-top:10px; font-style:italic; }
+  .tag-row{ display:flex; gap:8px; flex-wrap:wrap; margin: 6px 0 18px 0;}
+  .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; padding:4px 10px; border:1px solid var(--line); border-radius:20px; color:var(--ink-dim);}
+  table{ border-collapse:collapse; max-width:780px; margin: 16px 0 26px 0; width:100%;}
+  th,td{ text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); font-size:0.9rem; color:var(--ink-dim); vertical-align:top;}
+  th{ color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.06em;}
+  footer{ padding: 40px 40px 60px 40px; }
+  footer p{ color:var(--ink-dim); max-width:72ch; font-size:0.9rem;}
+  .toc-progress{ position:fixed; top:0; left:0; height:2px; background:var(--up); z-index:50; width:0%;}
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="toc-progress" id="prog"></div>
+<div class="wrap">
+
+<nav class="side" aria-label="Spis treści">
+  <div class="brand"><span class="dot"></span> Analiza Techniczna</div>
+  <ol>
+    <li><a href="#dow">Teoria Dowa — fundament</a></li>
+    <li><a href="#wykresy">Rodzaje wykresów</a></li>
+    <li><a href="#trend">Trend, linie, kanały</a></li>
+    <li><a href="#wsparcie">Wsparcie i opór</a></li>
+    <li><a href="#swiece">Formacje świecowe</a></li>
+    <li><a href="#formacje">Formacje odwrócenia</a></li>
+    <li><a href="#kontynuacja">Formacje kontynuacji</a></li>
+    <li><a href="#fibonacci">Zniesienia Fibonacciego</a></li>
+    <li><a href="#srednie">Średnie kroczące</a></li>
+    <li><a href="#bollinger">Wstęgi Bollingera</a></li>
+    <li><a href="#oscylatory">RSI, MACD, Stochastic, ADX</a></li>
+    <li><a href="#wolumen">Wolumen</a></li>
+    <li><a href="#interwaly">Wiele interwałów czasowych</a></li>
+    <li><a href="#ryzyko">Ryzyko i psychologia</a></li>
+    <li><a href="#elliott">Fale Elliotta</a></li>
+    <li><a href="#pf">Wykresy Punktowo-Symboliczne</a></li>
+    <li><a href="#miedzyrynkowa">Analiza międzyrynkowa</a></li>
+    <li><a href="#cykle">Cykle i sezonowość</a></li>
+    <li><a href="#luki">Luki cenowe (Gap)</a></li>
+    <li><a href="#plan">Plan tradingowy</a></li>
+    <li><a href="#backtest">Backtesting i statystyka</a></li>
+    <li><a href="#wyckoff">Metoda Wyckoffa</a></li>
+    <li><a href="#ichimoku">Ichimoku Kinko Hyo</a></li>
+    <li><a href="#sar-pivot">Parabolic SAR i Pivot Points</a></li>
+    <li><a href="#vwap">VWAP</a></li>
+    <li><a href="#swiece2">Więcej formacji świecowych</a></li>
+    <li><a href="#kelly">Kelly Criterion i position sizing</a></li>
+    <li><a href="#dziennik">Dziennik transakcji</a></li>
+    <li><a href="#praktyka-wsparcia">Praktyka: rysowanie wsparć/oporów</a></li>
+    <li><a href="#atr">ATR i wyznaczanie Stop-Loss</a></li>
+    <li><a href="#praktyka-sltp">Praktyka: wyznaczanie SL i TP</a></li>
+    <li><a href="#praktyka-wskazniki">Praktyka: czytanie wskaźników</a></li>
+    <li><a href="#studium">Studium przypadku: pełna analiza</a></li>
+    <li><a href="#heikin">Heikin-Ashi</a></li>
+    <li><a href="#renko">Wykresy Renko</a></li>
+    <li><a href="#volprofile">Profil Wolumenu (Volume Profile)</a></li>
+    <li><a href="#harmoniczne">Formacje harmoniczne</a></li>
+    <li><a href="#orderbook">Order Book i Order Flow</a></li>
+    <li><a href="#funding">Funding Rate i Open Interest</a></li>
+    <li><a href="#onchain">Podstawy analizy on-chain</a></li>
+    <li><a href="#korelacja">Korelacja i ryzyko portfela</a></li>
+    <li><a href="#ruin">Risk of Ruin</a></li>
+    <li><a href="#cwiczenia">Ćwiczenia i quiz sprawdzający</a></li>
+    <li><a href="#smc">Smart Money Concepts — pojęcia</a></li>
+    <li><a href="#strat1">Strategia: Breakout + Retest</a></li>
+    <li><a href="#strat2">Strategia: Pullback do EMA</a></li>
+    <li><a href="#strat3">Strategia: Liquidity Sweep + Order Block</a></li>
+    <li><a href="#strat4">Strategia: Dywergencja na S/R</a></li>
+    <li><a href="#strat5">Strategia: Wyckoff Spring</a></li>
+    <li><a href="#ocena-strategii">Jak krytycznie oceniać strategie</a></li>
+    <li><a href="#ai-wsparcie">Jak wspierać się AI w tradingu</a></li>
+    <li><a href="#slownik">Słowniczek pojęć</a></li>
+    <li><a href="#podsumowanie">Podsumowanie</a></li>
+  </ol>
+</nav>
+
+<main>
+
+  <div class="hero">
+    <div class="kicker">Pełny Kurs · Analiza Techniczna Rynków Finansowych</div>
+    <h1>Czytać wykres tak, jak trader czyta rynek.</h1>
+    <p class="lead">Kompletne, praktyczne wprowadzenie do analizy technicznej — od Teorii Dowa, przez pełny katalog formacji świecowych i cenowych, Fibonacciego, wstęgi Bollingera, oscylatory i fale Elliotta, po wykresy Point & Figure, analizę międzyrynkową, cykle, luki cenowe, plan tradingowy, backtesting, praktyczne rozdziały (rysowanie wsparć/oporów, SL/TP, czytanie wskaźników), pięć konkretnych strategii ze Smart Money Concepts i klasycznej AT, oraz świadome wykorzystanie AI jako wsparcia w nauce.</p>
+    <div class="meta"><span><b>53</b> rozdziały</span><span><b>70+</b> formacji i pojęć</span><span><b>60</b> diagramów</span><span>Poziom: podstawowy → zaawansowany</span></div>
+    <div class="hero-chart">
+      <svg viewBox="0 0 800 220" role="img" aria-label="Ilustracyjny wykres świecowy z linią trendu wzrostowego">
+        <line x1="0" y1="55" x2="800" y2="55" stroke="#1c2723" stroke-width="1"/>
+        <line x1="0" y1="110" x2="800" y2="110" stroke="#1c2723" stroke-width="1"/>
+        <line x1="0" y1="165" x2="800" y2="165" stroke="#1c2723" stroke-width="1"/>
+        <line x1="20" y1="190" x2="760" y2="40" stroke="#e0b15c" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.8"/>
+        <g stroke-width="1.4">
+          <line x1="30" y1="185" x2="30" y2="150" stroke="#e0685c"/><rect x="25" y="160" width="10" height="20" fill="#e0685c"/>
+          <line x1="55" y1="175" x2="55" y2="140" stroke="#4fd68c"/><rect x="50" y="145" width="10" height="22" fill="#4fd68c"/>
+          <line x1="80" y1="170" x2="80" y2="130" stroke="#e0685c"/><rect x="75" y="138" width="10" height="18" fill="#e0685c"/>
+          <line x1="105" y1="165" x2="105" y2="120" stroke="#4fd68c"/><rect x="100" y="125" width="10" height="30" fill="#4fd68c"/>
+          <line x1="130" y1="150" x2="130" y2="110" stroke="#4fd68c"/><rect x="125" y="115" width="10" height="24" fill="#4fd68c"/>
+          <line x1="155" y1="148" x2="155" y2="118" stroke="#e0685c"/><rect x="150" y="122" width="10" height="16" fill="#e0685c"/>
+          <line x1="180" y1="140" x2="180" y2="100" stroke="#4fd68c"/><rect x="175" y="105" width="10" height="26" fill="#4fd68c"/>
+          <line x1="205" y1="132" x2="205" y2="98" stroke="#4fd68c"/><rect x="200" y="102" width="10" height="20" fill="#4fd68c"/>
+          <line x1="230" y1="128" x2="230" y2="95" stroke="#e0685c"/><rect x="225" y="100" width="10" height="14" fill="#e0685c"/>
+          <line x1="255" y1="120" x2="255" y2="85" stroke="#4fd68c"/><rect x="250" y="90" width="10" height="24" fill="#4fd68c"/>
+          <line x1="280" y1="112" x2="280" y2="78" stroke="#4fd68c"/><rect x="275" y="82" width="10" height="22" fill="#4fd68c"/>
+          <line x1="305" y1="108" x2="305" y2="80" stroke="#e0685c"/><rect x="300" y="84" width="10" height="16" fill="#e0685c"/>
+          <line x1="330" y1="100" x2="330" y2="68" stroke="#4fd68c"/><rect x="325" y="72" width="10" height="22" fill="#4fd68c"/>
+          <line x1="355" y1="95" x2="355" y2="62" stroke="#4fd68c"/><rect x="350" y="66" width="10" height="22" fill="#4fd68c"/>
+          <line x1="380" y1="90" x2="380" y2="60" stroke="#e0685c"/><rect x="375" y="64" width="10" height="14" fill="#e0685c"/>
+          <line x1="405" y1="82" x2="405" y2="50" stroke="#4fd68c"/><rect x="400" y="55" width="10" height="20" fill="#4fd68c"/>
+          <line x1="430" y1="78" x2="430" y2="45" stroke="#4fd68c"/><rect x="425" y="48" width="10" height="24" fill="#4fd68c"/>
+          <line x1="455" y1="70" x2="455" y2="42" stroke="#e0685c"/><rect x="450" y="46" width="10" height="14" fill="#e0685c"/>
+          <line x1="480" y1="64" x2="480" y2="34" stroke="#4fd68c"/><rect x="475" y="38" width="10" height="20" fill="#4fd68c"/>
+          <line x1="505" y1="58" x2="505" y2="30" stroke="#4fd68c"/><rect x="500" y="34" width="10" height="18" fill="#4fd68c"/>
+          <line x1="530" y1="55" x2="530" y2="28" stroke="#e0685c"/><rect x="525" y="32" width="10" height="12" fill="#e0685c"/>
+          <line x1="555" y1="50" x2="555" y2="20" stroke="#4fd68c"/><rect x="550" y="24" width="10" height="20" fill="#4fd68c"/>
+          <line x1="580" y1="46" x2="580" y2="18" stroke="#4fd68c"/><rect x="575" y="22" width="10" height="18" fill="#4fd68c"/>
+          <line x1="605" y1="44" x2="605" y2="16" stroke="#e0685c"/><rect x="600" y="20" width="10" height="12" fill="#e0685c"/>
+          <line x1="630" y1="40" x2="630" y2="12" stroke="#4fd68c"/><rect x="625" y="16" width="10" height="18" fill="#4fd68c"/>
+          <line x1="655" y1="36" x2="655" y2="10" stroke="#4fd68c"/><rect x="650" y="13" width="10" height="17" fill="#4fd68c"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <section id="dow">
+    <span class="eyebrow">Rozdział 1</span>
+    <h2>Teoria Dowa — fundament analizy technicznej</h2>
+    <p>Cała współczesna analiza techniczna wywodzi się z sześciu zasad sformułowanych na przełomie XIX i XX wieku przez Charlesa Dowa, twórcę indeksu Dow Jones. Znajomość tych zasad porządkuje wszystko, co pojawi się w dalszych rozdziałach.</p>
+
+    <div class="panel"><span class="label">Zasada 1</span><strong>Rynek dyskontuje wszystko.</strong> Cena w danym momencie odzwierciedla już wszystkie znane informacje — dane makro, nastroje, oczekiwania. Analityk techniczny bada skutek (ruch ceny), a nie przyczynę.</div>
+    <div class="panel"><span class="label">Zasada 2</span><strong>Rynek porusza się w trzech trendach.</strong> Trend główny (miesiące–lata), trend wtórny — korekta w ramach głównego (tygodnie–miesiące), oraz trend krótkoterminowy — szum dnia codziennego (dni). Trader musi wiedzieć, w którym trendzie faktycznie handluje.</div>
+    <div class="panel"><span class="label">Zasada 3</span><strong>Trend główny ma trzy fazy.</strong> Faza akumulacji (najbardziej doświadczeni gracze cicho budują pozycje, gdy sentyment jest jeszcze zły), faza uczestnictwa publicznego (dołącza szeroki rynek, trend przyspiesza) oraz faza dystrybucji (doświadczeni gracze wychodzą z pozycji, podczas gdy tłum wciąż kupuje w euforii).</div>
+    <div class="panel"><span class="label">Zasada 4</span><strong>Indeksy/rynki muszą się wzajemnie potwierdzać.</strong> W klasycznej wersji Dow porównywał indeks przemysłowy z transportowym — sygnał trendu uznawał za wiarygodny dopiero, gdy oba się zgadzały. Współcześnie zasadę tę stosuje się np. porównując Bitcoina z całym rynkiem altcoinów (dominacja BTC), albo spółkę z indeksem jej sektora.</div>
+    <div class="panel"><span class="label">Zasada 5</span><strong>Wolumen musi potwierdzać trend.</strong> Ruch ceny bez wzrostu wolumenu jest mniej wiarygodny. Rozwinięcie tej zasady znajdziesz w rozdziale 12.</div>
+    <div class="panel"><span class="label">Zasada 6</span><strong>Trend trwa, dopóki nie pojawi się wyraźny sygnał odwrócenia.</strong> To zasada, która broni przed przedwczesnym "łapaniem szczytów i dołków" — domyślnie zakładamy kontynuację, a nie zmianę kierunku, dopóki rynek jednoznacznie nie powie inaczej (np. przełamując linię trendu na zwiększonym wolumenie).</div>
+
+    <h3>Dlaczego to działa: psychologia tłumu</h3>
+    <p>Formacje i poziomy działają nie dlatego, że rynek jest magiczny, ale dlatego, że odzwierciedlają powtarzalne wzorce ludzkich zachowań: strach przed stratą, chciwość, żal po przegapionej okazji (FOMO), stadny instynkt. Ci sami ludzie w podobnych sytuacjach emocjonalnych podejmują podobne decyzje — stąd te same kształty na wykresach niezależnie od instrumentu i epoki.</p>
+
+    <h3>Krytyka i ograniczenia Teorii Dowa</h3>
+    <p>Warto znać też słabe strony tej teorii, zamiast przyjmować ją bezkrytycznie. Po pierwsze, sygnały bywają spóźnione — zanim wszystkie warunki (np. potwierdzenie dwóch indeksów) zostaną spełnione, znaczna część ruchu może być już za nami. Po drugie, teoria mówi niewiele o wielkości ruchu ani o precyzyjnym momencie wejścia — daje kontekst strategiczny, nie konkretny sygnał transakcyjny. Po trzecie, we współczesnych, bardzo płynnych rynkach (szczególnie krypto, gdzie handel trwa 24/7) klasyczny podział na "sesje" i wolniejsze reagowanie tłumu jest mniej wyraźny niż w czasach Dowa, co osłabia część założeń o fazach akumulacji/dystrybucji.</p>
+    <div class="panel"><span class="label">Jak z tego korzystać praktycznie</span>Traktuj Teorię Dowa jako mapę kontekstu — pomaga odpowiedzieć na pytanie "w jakiej fazie rynku prawdopodobnie jesteśmy", a nie "gdzie dokładnie wejść w pozycję". Precyzyjny timing dają dopiero narzędzia z kolejnych rozdziałów.</div>
+  </section>
+
+  <section id="wykresy">
+    <span class="eyebrow">Rozdział 2</span>
+    <h2>Rodzaje wykresów</h2>
+    <p>Ta sama cena może zostać przedstawiona na kilka sposobów. Każdy typ wykresu ujawnia inną ilość informacji o tym, co działo się w danym okresie.</p>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 260 140" role="img" aria-label="Wykres liniowy">
+          <polyline points="10,110 40,95 70,100 100,75 130,80 160,55 190,60 220,35 250,40" fill="none" stroke="#4fd68c" stroke-width="2"/>
+        </svg>
+        <figcaption><strong>Liniowy</strong> — łączy wyłącznie ceny zamknięcia. Czytelny, ale gubi informację o zmienności wewnątrz okresu.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 260 140" role="img" aria-label="Wykres słupkowy OHLC">
+          <g stroke="#e9efe9" stroke-width="1.6">
+            <line x1="30" y1="100" x2="30" y2="60"/><line x1="26" y1="90" x2="30" y2="90"/><line x1="30" y1="72" x2="34" y2="72"/>
+            <line x1="70" y1="95" x2="70" y2="50"/><line x1="66" y1="80" x2="70" y2="80"/><line x1="70" y1="60" x2="74" y2="60"/>
+            <line x1="110" y1="80" x2="110" y2="40"/><line x1="106" y1="70" x2="110" y2="70"/><line x1="110" y1="50" x2="114" y2="50"/>
+            <line x1="150" y1="70" x2="150" y2="35"/><line x1="146" y1="60" x2="150" y2="60"/><line x1="150" y1="45" x2="154" y2="45"/>
+            <line x1="190" y1="55" x2="190" y2="25"/><line x1="186" y1="45" x2="190" y2="45"/><line x1="190" y1="32" x2="194" y2="32"/>
+            <line x1="230" y1="45" x2="230" y2="20"/><line x1="226" y1="38" x2="230" y2="38"/><line x1="230" y1="25" x2="234" y2="25"/>
+          </g>
+        </svg>
+        <figcaption><strong>Słupkowy (OHLC)</strong> — pokazuje otwarcie (kreska z lewej), zamknięcie (kreska z prawej) oraz maksimum i minimum.</figcaption>
+      </figure>
+    </div>
+    <figure>
+      <svg viewBox="0 0 500 150" role="img" aria-label="Wykres świecowy z korpusami i cieniami">
+        <g stroke-width="1.4">
+          <line x1="30" y1="130" x2="30" y2="95" stroke="#e0685c"/><rect x="24" y="105" width="12" height="18" fill="#e0685c"/>
+          <line x1="70" y1="120" x2="70" y2="80" stroke="#4fd68c"/><rect x="64" y="88" width="12" height="22" fill="#4fd68c"/>
+          <line x1="110" y1="110" x2="110" y2="65" stroke="#4fd68c"/><rect x="104" y="72" width="12" height="26" fill="#4fd68c"/>
+          <line x1="150" y1="100" x2="150" y2="70" stroke="#e0685c"/><rect x="144" y="76" width="12" height="14" fill="#e0685c"/>
+          <line x1="190" y1="90" x2="190" y2="50" stroke="#4fd68c"/><rect x="184" y="56" width="12" height="24" fill="#4fd68c"/>
+          <line x1="230" y1="80" x2="230" y2="45" stroke="#4fd68c"/><rect x="224" y="50" width="12" height="20" fill="#4fd68c"/>
+          <line x1="270" y1="75" x2="270" y2="40" stroke="#e0685c"/><rect x="264" y="45" width="12" height="16" fill="#e0685c"/>
+          <line x1="310" y1="65" x2="310" y2="30" stroke="#4fd68c"/><rect x="304" y="35" width="12" height="22" fill="#4fd68c"/>
+        </g>
+        <text x="380" y="70" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="11">górny cień</text>
+        <line x1="370" y1="66" x2="316" y2="35" stroke="#a9b8ae" stroke-width="0.8"/>
+        <text x="380" y="100" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="11">korpus</text>
+        <line x1="378" y1="96" x2="316" y2="45" stroke="#a9b8ae" stroke-width="0.8"/>
+      </svg>
+      <figcaption><strong>Świecowy</strong> — najbardziej informacyjny: korpus pokazuje zakres otwarcie–zamknięcie, cienie pokazują skrajne wychylenia ceny.</figcaption>
+    </figure>
+    <h3>Interwały czasowe</h3>
+    <p>Każdy typ wykresu można wyświetlić w różnych interwałach — od 1-minutowego po tygodniowy i miesięczny. Jedna świeca na wykresie dziennym (D1) podsumowuje całą dobę handlu; jedna świeca na wykresie godzinowym (H1) — jedną godzinę. Wybór interwału zależy od horyzontu inwestycyjnego (więcej w rozdziale 13).</p>
+  </section>
+
+  <section id="trend">
+    <span class="eyebrow">Rozdział 3</span>
+    <h2>Trend, linie trendu i kanały</h2>
+    <p>Trend to ogólny kierunek, w którym porusza się cena.</p>
+    <table>
+      <tr><th>Typ trendu</th><th>Charakterystyka</th></tr>
+      <tr><td>Wzrostowy (hossa)</td><td>Kolejne szczyty i dołki są coraz wyższe (higher highs, higher lows)</td></tr>
+      <tr><td>Spadkowy (bessa)</td><td>Kolejne szczyty i dołki są coraz niższe (lower highs, lower lows)</td></tr>
+      <tr><td>Boczny (konsolidacja)</td><td>Cena porusza się w wąskim przedziale, bez wyraźnego kierunku</td></tr>
+    </table>
+    <h3>Linia trendu</h3>
+    <p>Linię trendu wzrostowego rysuje się, łącząc co najmniej dwa kolejne, coraz wyższe dołki. Linię trendu spadkowego — łącząc co najmniej dwa coraz niższe szczyty. Im więcej razy cena "odbija się" od tej linii, tym silniejsze potwierdzenie trendu — ale też tym bliżej momentu, gdy w końcu zostanie przełamana.</p>
+    <figure>
+      <svg viewBox="0 0 600 220" role="img" aria-label="Kanał trendu wzrostowego z linią wsparcia i oporu">
+        <polyline points="20,190 70,160 120,175 170,130 220,145 270,100 320,115 370,70 420,85 470,45 520,60 560,25" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <line x1="10" y1="200" x2="480" y2="35" stroke="#4fd68c" stroke-width="1.6" stroke-dasharray="4 3"/>
+        <line x1="60" y1="185" x2="530" y2="20" stroke="#4fd68c" stroke-width="1.6" stroke-dasharray="4 3"/>
+        <circle cx="70" cy="160" r="3.5" fill="#e0b15c"/><circle cx="170" cy="130" r="3.5" fill="#e0b15c"/>
+        <circle cx="270" cy="100" r="3.5" fill="#e0b15c"/><circle cx="420" cy="85" r="3.5" fill="#e0b15c"/>
+        <text x="20" y="215" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="11">dolna granica kanału (wsparcie)</text>
+        <text x="330" y="20" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="11">górna granica kanału (opór)</text>
+      </svg>
+      <figcaption>Kanał trendu wzrostowego: cena porusza się między dwiema równoległymi liniami. Żółte punkty to kolejne, coraz wyższe dołki potwierdzające trend.</figcaption>
+    </figure>
+    <h3>Siła linii trendu</h3>
+    <ul>
+      <li><strong>Liczba dotknięć</strong> — linia potwierdzona 3–4 razy jest wiarygodniejsza niż oparta na dwóch punktach.</li>
+      <li><strong>Kąt nachylenia</strong> — bardzo strome linie trendu (powyżej ok. 45°) rzadko utrzymują się długo; łagodniejsze nachylenie zwykle oznacza zdrowszy, trwalszy trend.</li>
+      <li><strong>Czas trwania</strong> — im dłużej linia jest testowana bez przełamania, tym istotniejszy sygnał daje jej ostateczne złamanie.</li>
+    </ul>
+    <div class="panel"><span class="label">Zasada praktyczna</span>Przełamanie długo utrzymującej się linii trendu sygnalizuje, że zmienił się bilans sił między kupującymi a sprzedającymi — ale samo przełamanie warto potwierdzić zamknięciem świecy poza linią, a nie tylko chwilowym jej naruszeniem cieniem.</div>
+
+    <h3>Jak trendy się kończą — trzy typowe scenariusze</h3>
+    <p>Trend rzadko kończy się nagle, bez ostrzeżenia. Warto rozpoznawać trzy powtarzalne wzorce jego wygasania:</p>
+    <ul>
+      <li><strong>Wyczerpanie (climax)</strong> — gwałtowne przyspieszenie ceny na końcu trendu, często z luką wyczerpania (rozdział 19) i skrajnym odczytem RSI, po którym następuje ostry zwrot.</li>
+      <li><strong>Stopniowe słabnięcie</strong> — kolejne szczyty/dołki wciąż rosną, ale coraz wolniej i na coraz niższym wolumenie; struktura trendu formalnie się utrzymuje, choć "paliwo" już się kończy.</li>
+      <li><strong>Formacja odwrócenia</strong> — trend zatrzymuje się w wyraźnej formacji (głowa i ramiona, podwójny szczyt — rozdział 6), która daje konkretny, mierzalny sygnał zmiany kierunku.</li>
+    </ul>
+
+    <h3>Trend wtórny wewnątrz trendu głównego</h3>
+    <p>Zgodnie z drugą zasadą Dowa (rozdział 1), w ramach trendu głównego zawsze pojawiają się korekty — krótsze ruchy w przeciwnym kierunku. Kluczowa umiejętność praktyczna to odróżnienie zdrowej korekty (np. cofnięcie do 38,2–61,8% wg Fibonacciego z rozdziału 8, bez złamania głównej linii trendu) od faktycznego odwrócenia (złamanie linii trendu + formacja odwrócenia + spadek poniżej poprzedniego dołka wzrostowego).</p>
+    <table>
+      <tr><th>Cecha</th><th>Zdrowa korekta</th><th>Prawdziwe odwrócenie</th></tr>
+      <tr><td>Linia trendu głównego</td><td>Nienaruszona</td><td>Przełamana i potwierdzona</td></tr>
+      <tr><td>Poprzedni dołek/szczyt</td><td>Nie zostaje złamany</td><td>Zostaje wyraźnie złamany</td></tr>
+      <tr><td>Wolumen podczas ruchu</td><td>Zwykle niższy niż w trendzie głównym</td><td>Często rośnie w kierunku nowego ruchu</td></tr>
+      <tr><td>Czas trwania</td><td>Krótszy niż poprzedni ruch trendu głównego</td><td>Zaczyna dorównywać lub przekraczać poprzedni ruch</td></tr>
+    </table>
+  </section>
+
+  <section id="wsparcie">
+    <span class="eyebrow">Rozdział 4</span>
+    <h2>Wsparcie i opór</h2>
+    <p><strong>Wsparcie</strong> to poziom cenowy, na którym popyt historycznie był na tyle silny, że powstrzymywał dalsze spadki. <strong>Opór</strong> to poziom, na którym podaż powstrzymywała dalsze wzrosty.</p>
+    <figure>
+      <svg viewBox="0 0 600 200" role="img" aria-label="Poziomy wsparcia i oporu oraz zamiana ról po przełamaniu">
+        <line x1="0" y1="60" x2="600" y2="60" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <line x1="0" y1="150" x2="600" y2="150" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <polyline points="10,150 50,110 90,150 130,105 170,150 210,95 250,150 290,80 330,60 370,30 410,60 450,45 490,60 530,35 570,55" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <text x="10" y="53" fill="#e0685c" font-family="IBM Plex Mono" font-size="11">opór</text>
+        <text x="10" y="168" fill="#4fd68c" font-family="IBM Plex Mono" font-size="11">wsparcie</text>
+        <text x="340" y="20" fill="#e0b15c" font-family="IBM Plex Mono" font-size="11">wybicie ↑</text>
+      </svg>
+      <figcaption>Cena wielokrotnie odbija się od wsparcia i oporu, aż w końcu wybija górny poziom — który od tej pory zwykle działa jako nowe wsparcie.</figcaption>
+    </figure>
+    <div class="panel"><span class="label">Zamiana ról</span>Gdy opór zostaje wybity, zwykle zamienia się w nowe wsparcie (i odwrotnie). Tłumaczy się to psychologią: inwestorzy, którzy przegapili wybicie, czekają na powrót ceny do starego poziomu, aby dołączyć do trendu.</div>
+    <h3>Poziomy psychologiczne i okrągłe liczby</h3>
+    <p>Poza poziomami wynikającymi z historii wykresu, ważną rolę odgrywają "okrągłe" liczby — np. 50 000 USD dla Bitcoina czy 100 zł dla akcji. Wielu inwestorów detalicznych ustawia zlecenia właśnie przy takich wartościach, co samo w sobie tworzy realne skupisko podaży/popytu.</p>
+    <h3>Strefy zamiast pojedynczych linii</h3>
+    <p>W praktyce wsparcie i opór rzadko są jedną idealną linią — lepiej myśleć o nich jako o strefach (kilka procent szerokości), ponieważ różne świece "dotykają" nieco innych poziomów przy tym samym, ogólnym miejscu reakcji rynku.</p>
+
+    <h3>Dlaczego dany poziom w ogóle powstaje</h3>
+    <p>Wsparcie i opór nie biorą się znikąd — to konkretne zdarzenia rynkowe zostawiają "ślad pamięci":</p>
+    <ul>
+      <li><strong>Poprzedni szczyt/dołek</strong> — inwestorzy, którzy kupili na szczycie przed spadkiem, czekają "na zero" (wyjście bez straty), tworząc podaż przy powrocie ceny do tego poziomu.</li>
+      <li><strong>Miejsce dawnej dużej konsolidacji</strong> — długi czas spędzony na jednym poziomie oznacza dużą liczbę zawartych transakcji, czyli dużą liczbę potencjalnych przyszłych decyzji "wyjścia bez straty" lub "dołożenia" w tym miejscu.</li>
+      <li><strong>Poziom otwarcia dużej luki cenowej</strong> (rozdział 19) — często działa jako wsparcie/opór, zanim luka zostanie w pełni "domknięta".</li>
+    </ul>
+
+    <h3>Siła poziomu — nie wszystkie wsparcia są równe</h3>
+    <table>
+      <tr><th>Czynnik</th><th>Wzmacnia poziom</th><th>Osłabia poziom</th></tr>
+      <tr><td>Liczba dotknięć</td><td>3 i więcej wyraźnych reakcji</td><td>Tylko 1–2 dotknięcia</td></tr>
+      <tr><td>Wiek poziomu</td><td>Testowany od miesięcy/lat</td><td>Powstał kilka świec temu</td></tr>
+      <tr><td>Interwał, na którym widoczny</td><td>Widoczny na D1/W1</td><td>Widoczny tylko na M5/M15</td></tr>
+      <tr><td>Zgodność z innym narzędziem</td><td>Pokrywa się z Fibonacci, średnią, POC z profilu wolumenu</td><td>Odosobniony, nic go nie potwierdza</td></tr>
+    </table>
+    <div class="panel"><span class="label">Konfluencja (confluence)</span>Najsilniejsze poziomy to te, w których nakłada się kilka niezależnych narzędzi jednocześnie — np. stare wsparcie + zniesienie 61,8% Fibonacciego + SMA 200. Im więcej niezależnych "głosów" wskazuje to samo miejsce, tym większa szansa na realną reakcję ceny.</div>
+  </section>
+
+  <section id="swiece">
+    <span class="eyebrow">Rozdział 5</span>
+    <h2>Formacje świecowe</h2>
+    <p>Pojedyncze świece i ich układy potrafią sygnalizować zmianę nastrojów na rynku, zanim będzie ona widoczna na poziomie całej formacji cenowej. Poniżej najważniejsze formacje pojedyncze i dwuświecowe.</p>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 120 140" role="img" aria-label="Świeca Doji">
+          <line x1="60" y1="20" x2="60" y2="120" stroke="#a9b8ae" stroke-width="1.6"/>
+          <line x1="42" y1="68" x2="78" y2="68" stroke="#e9efe9" stroke-width="3"/>
+        </svg>
+        <figcaption><strong>Doji</strong> — otwarcie i zamknięcie niemal identyczne. Oznacza niezdecydowanie i często poprzedza odwrócenie trendu.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 120 140" role="img" aria-label="Świeca Młot">
+          <line x1="60" y1="20" x2="60" y2="120" stroke="#4fd68c" stroke-width="1.6"/>
+          <rect x="45" y="20" width="30" height="22" fill="#4fd68c"/>
+        </svg>
+        <figcaption><strong>Młot (Hammer)</strong> — mały korpus u góry, długi dolny cień. Na dole trendu spadkowego sugeruje odrzucenie niższych cen przez kupujących.</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 120 140" role="img" aria-label="Świeca Spadająca Gwiazda">
+          <line x1="60" y1="20" x2="60" y2="120" stroke="#e0685c" stroke-width="1.6"/>
+          <rect x="45" y="98" width="30" height="22" fill="#e0685c"/>
+        </svg>
+        <figcaption><strong>Spadająca gwiazda (Shooting Star)</strong> — mały korpus u dołu, długi górny cień. Na szczycie trendu wzrostowego sygnalizuje odrzucenie wyższych cen.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 120 140" role="img" aria-label="Świeca wisielec">
+          <line x1="60" y1="20" x2="60" y2="120" stroke="#e0685c" stroke-width="1.6"/>
+          <rect x="45" y="20" width="30" height="22" fill="#e0685c"/>
+        </svg>
+        <figcaption><strong>Wisielec (Hanging Man)</strong> — wygląda jak młot, ale pojawia się na szczycie trendu wzrostowego — ostrzega przed odwróceniem w dół.</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Formacja objęcia hossy">
+          <line x1="60" y1="60" x2="60" y2="90" stroke="#e0685c" stroke-width="1.6"/><rect x="50" y="65" width="20" height="20" fill="#e0685c"/>
+          <line x1="105" y1="35" x2="105" y2="120" stroke="#4fd68c" stroke-width="1.6"/><rect x="90" y="42" width="30" height="70" fill="#4fd68c"/>
+        </svg>
+        <figcaption><strong>Objęcie hossy (Bullish Engulfing)</strong> — duża zielona świeca w całości "połyka" poprzednią czerwoną. Silny sygnał zwrotu na wzrosty.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Formacja objęcia bessy">
+          <line x1="60" y1="35" x2="60" y2="90" stroke="#4fd68c" stroke-width="1.6"/><rect x="50" y="42" width="20" height="40" fill="#4fd68c"/>
+          <line x1="105" y1="25" x2="105" y2="120" stroke="#e0685c" stroke-width="1.6"/><rect x="90" y="32" width="30" height="70" fill="#e0685c"/>
+        </svg>
+        <figcaption><strong>Objęcie bessy (Bearish Engulfing)</strong> — lustrzane odbicie powyższego: duża czerwona świeca połyka poprzednią zieloną. Sygnał zwrotu na spadki.</figcaption>
+      </figure>
+    </div>
+    <div class="grid-3">
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Gwiazda poranna">
+          <line x1="30" y1="30" x2="30" y2="70" stroke="#e0685c" stroke-width="1.4"/><rect x="22" y="35" width="16" height="30" fill="#e0685c"/>
+          <line x1="75" y1="80" x2="75" y2="100" stroke="#a9b8ae" stroke-width="1.4"/><rect x="68" y="86" width="14" height="8" fill="#e0b15c"/>
+          <line x1="120" y1="25" x2="120" y2="95" stroke="#4fd68c" stroke-width="1.4"/><rect x="112" y="32" width="16" height="55" fill="#4fd68c"/>
+        </svg>
+        <figcaption><strong>Gwiazda poranna</strong> — trzyświecowe odwrócenie na dole trendu: duża czerwona, mała świeca luką w dół, duża zielona.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Gwiazda wieczorna">
+          <line x1="30" y1="70" x2="30" y2="110" stroke="#4fd68c" stroke-width="1.4"/><rect x="22" y="75" width="16" height="30" fill="#4fd68c"/>
+          <line x1="75" y1="30" x2="75" y2="50" stroke="#a9b8ae" stroke-width="1.4"/><rect x="68" y="36" width="14" height="8" fill="#e0b15c"/>
+          <line x1="120" y1="35" x2="120" y2="105" stroke="#e0685c" stroke-width="1.4"/><rect x="112" y="42" width="16" height="55" fill="#e0685c"/>
+        </svg>
+        <figcaption><strong>Gwiazda wieczorna</strong> — lustrzane odbicie: sygnał odwrócenia na szczycie trendu wzrostowego.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Trzy białe żołnierze">
+          <line x1="25" y1="90" x2="25" y2="115" stroke="#4fd68c" stroke-width="1.4"/><rect x="18" y="95" width="14" height="18" fill="#4fd68c"/>
+          <line x1="70" y1="65" x2="70" y2="95" stroke="#4fd68c" stroke-width="1.4"/><rect x="63" y="70" width="14" height="20" fill="#4fd68c"/>
+          <line x1="115" y1="35" x2="115" y2="70" stroke="#4fd68c" stroke-width="1.4"/><rect x="108" y="40" width="14" height="25" fill="#4fd68c"/>
+        </svg>
+        <figcaption><strong>Trzy białe żołnierze</strong> — trzy kolejne rosnące zielone świece o podobnej wielkości. Silne potwierdzenie trendu wzrostowego.</figcaption>
+      </figure>
+    </div>
+    <p>Pojedyncza świeca rzadko wystarcza jako samodzielny sygnał — nabiera znaczenia dopiero w kontekście: po dłuższym trendzie, blisko poziomu wsparcia/oporu, z potwierdzeniem wolumenu.</p>
+
+    <h3>Co naprawdę mówi Ci kształt świecy</h3>
+    <p>Każdy element świecy koduje konkretną informację o walce kupujących i sprzedających w danym okresie:</p>
+    <ul>
+      <li><strong>Długość korpusu</strong> — długi korpus oznacza zdecydowaną przewagę jednej strony przez cały okres; krótki korpus oznacza remis, mimo że cena mogła się w międzyczasie mocno wychylać.</li>
+      <li><strong>Długość cieni</strong> — długi cień pokazuje, że w trakcie okresu cena poszła mocno w jedną stronę, ale została odrzucona i zamknięcie wróciło blisko punktu startowego — to bezpośredni ślad "przegranej" jednej ze stron.</li>
+      <li><strong>Miejsce w kontekście</strong> — dokładnie ta sama świeca (np. młot) oznacza co innego na dole długiego trendu spadkowego (silny sygnał odwrócenia) niż w środku bocznej konsolidacji (zwykły szum bez większego znaczenia).</li>
+    </ul>
+
+    <h3>Realna skuteczność formacji świecowych</h3>
+    <p>Formacje świecowe nie są "gwarancją" — badania statystyczne nad historycznymi danymi pokazują, że pojedyncze formacje trafiają zwykle w okolicach 50–65% przypadków, w zależności od kontekstu i instrumentu. To wciąż wartościowa przewaga, ale tylko wtedy, gdy jest połączona z rozsądnym zarządzaniem ryzykiem (rozdział 14) — sama formacja świecowa nigdy nie powinna być jedynym powodem wejścia w pozycję.</p>
+    <div class="panel"><span class="label">Zasada łączenia sygnałów</span>Formacja świecowa zyskuje na wiarygodności, gdy pojawia się jednocześnie: (1) przy istotnym poziomie wsparcia/oporu, (2) ze zgodnym kierunkiem wskazywanym przez wolumen, (3) w kierunku zgodnym z trendem wyższego interwału. Im więcej z tych trzech warunków spełnionych, tym mocniejszy sygnał.</div>
+  </section>
+
+  <section id="formacje">
+    <span class="eyebrow">Rozdział 6</span>
+    <h2>Formacje cenowe: odwrócenia trendu</h2>
+    <p>Formacje odwrócenia pojawiają się zwykle po dłuższym trendzie i sygnalizują, że kończy się on, ustępując miejsca ruchowi w przeciwnym kierunku.</p>
+    <h3>Głowa i ramiona</h3>
+    <figure>
+      <svg viewBox="0 0 500 180" role="img" aria-label="Formacja głowy i ramion">
+        <line x1="20" y1="120" x2="480" y2="120" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <polyline points="20,150 90,70 160,120 230,25 300,120 370,75 440,150" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <text x="75" y="60" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">ramię</text>
+        <text x="205" y="18" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">głowa</text>
+        <text x="360" y="65" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">ramię</text>
+        <text x="180" y="135" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">linia szyi</text>
+      </svg>
+      <figcaption>Trzy szczyty, środkowy najwyższy. Przełamanie linii szyi w dół potwierdza sygnał sprzedaży — zasięg spadku szacuje się jako odległość od głowy do linii szyi, odłożoną w dół od miejsca przełamania.</figcaption>
+    </figure>
+    <p>Odwrotna wersja tej formacji — <strong>odwrócona głowa i ramiona</strong> — pojawia się na dole trendu spadkowego i zapowiada odwrócenie na wzrosty (lustrzane odbicie powyższego kształtu).</p>
+    <h4>Jak mierzyć zasięg ruchu po wybiciu</h4>
+    <p>Formacja głowy i ramion daje konkretną, mierzalną projekcję celu: zmierz odległość pionową od głowy do linii szyi, a następnie odłóż tę samą odległość od punktu przełamania linii szyi w kierunku ruchu. To najpopularniejsza metoda wyznaczania orientacyjnego <strong>Take-Profit</strong> dla tej formacji (patrz też rozdział 31).</p>
+    <div class="panel warn"><span class="label">Częsty błąd</span>Formacja "głowy i ramion" bywa nadinterpretowana — wielu początkujących widzi ją wszędzie, nawet w zwykłym szumie cenowym. Warunkiem wiarygodności jest wyraźna, symetryczna linia szyi oraz malejący wolumen na kolejnych szczytach — bez tego to zwykle przypadkowy kształt, a nie realna formacja.</div>
+
+    <h3>Podwójny szczyt / podwójny dołek</h3>
+    <figure>
+      <svg viewBox="0 0 500 160" role="img" aria-label="Formacja podwójnego szczytu">
+        <line x1="20" y1="110" x2="480" y2="110" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <polyline points="20,140 130,30 220,110 310,32 400,140" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <text x="105" y="20" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">szczyt A</text>
+        <text x="290" y="22" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">szczyt B</text>
+      </svg>
+      <figcaption>Cena dwukrotnie testuje ten sam poziom oporu i wycofuje się — kształt przypominający literę "M". Sygnał sprzedaży pojawia się przy przełamaniu dołka między szczytami. Wersja odwrotna (litera "W") to podwójny dołek.</figcaption>
+    </figure>
+    <p>Cel po wybiciu wyznacza się analogicznie do głowy i ramion: mierzysz odległość od szczytów do dołka między nimi, i odkładasz tę wartość od punktu przełamania. Im dłuższy czas między dwoma szczytami (miesiące, nie dni), tym formacja uznawana jest za bardziej wiarygodną — zbyt szybko uformowany "podwójny szczyt" bywa zwykłym przypadkiem.</p>
+    <h3>Formacja odwróconej głowy — zaokrąglenia</h3>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 260 140" role="img" aria-label="Zaokrąglony dołek">
+          <line x1="10" y1="30" x2="250" y2="30" stroke="#e0685c" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <path d="M 15 40 Q 130 130 245 40" fill="none" stroke="#4fd68c" stroke-width="2.2"/>
+        </svg>
+        <figcaption><strong>Zaokrąglony dołek (Rounding Bottom)</strong> — powolna, łukowa zmiana trendu ze spadkowego na wzrostowy. Typowa dla długich akumulacji.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 260 140" role="img" aria-label="Kubek z uchem">
+          <path d="M 10 55 Q 90 120 170 55" fill="none" stroke="#4fd68c" stroke-width="2.2"/>
+          <polyline points="170,55 185,75 200,60 215,80 230,50" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        </svg>
+        <figcaption><strong>Kubek z uchem (Cup and Handle)</strong> — zaokrąglona baza ("kubek"), po niej krótka, płytsza konsolidacja ("uchwyt"), a następnie wybicie w górę.</figcaption>
+      </figure>
+    </div>
+    <h3>Klin (Wedge)</h3>
+    <figure>
+      <svg viewBox="0 0 400 150" role="img" aria-label="Klin opadający">
+        <line x1="10" y1="30" x2="330" y2="90" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <line x1="10" y1="100" x2="330" y2="95" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <polyline points="10,60 50,95 90,55 130,85 170,60 210,88 250,72 290,90" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <polyline points="290,90 340,30" fill="none" stroke="#4fd68c" stroke-width="2.4"/>
+      </svg>
+      <figcaption><strong>Klin opadający (Falling Wedge)</strong> — obie linie graniczne opadają, ale zbiegają się do siebie; mimo spadkowego wyglądu, zwykle zapowiada wybicie w górę. Klin wznoszący (Rising Wedge) działa odwrotnie — zwykle zapowiada spadek.</figcaption>
+    </figure>
+  </section>
+
+  <section id="kontynuacja">
+    <span class="eyebrow">Rozdział 7</span>
+    <h2>Formacje cenowe: kontynuacja trendu</h2>
+    <p>Formacje kontynuacji to chwilowa przerwa ("oddech") w trakcie trwającego trendu, po której ruch zwykle wznawia się w tym samym kierunku.</p>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 260 150" role="img" aria-label="Trójkąt symetryczny">
+          <line x1="10" y1="20" x2="220" y2="70" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <line x1="10" y1="120" x2="220" y2="72" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <polyline points="10,25 60,110 100,45 140,90 175,60 220,71" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        </svg>
+        <figcaption><strong>Trójkąt symetryczny</strong> — zwężający się zakres wahań przed wybiciem; kierunek wybicia zwykle zgodny z wcześniejszym trendem.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 260 150" role="img" aria-label="Formacja flagi">
+          <polyline points="10,130 40,60" fill="none" stroke="#4fd68c" stroke-width="2.4"/>
+          <line x1="40" y1="55" x2="160" y2="90" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <line x1="40" y1="80" x2="160" y2="112" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <polyline points="45,60 70,80 90,68 110,88 130,78 155,98" fill="none" stroke="#e9efe9" stroke-width="1.8"/>
+          <polyline points="160,100 200,40" fill="none" stroke="#4fd68c" stroke-width="2.4"/>
+        </svg>
+        <figcaption><strong>Flaga</strong> — po gwałtownym ruchu ("maszcie") cena konsoliduje się w wąskim, lekko nachylonym kanale, po czym kontynuuje ruch w tym samym kierunku.</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 260 150" role="img" aria-label="Prostokąt konsolidacji">
+          <line x1="10" y1="30" x2="240" y2="30" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <line x1="10" y1="110" x2="240" y2="110" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <polyline points="10,105 40,40 70,100 100,35 130,105 160,38 190,102 220,35" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        </svg>
+        <figcaption><strong>Prostokąt (Rectangle)</strong> — cena porusza się między dwoma poziomymi liniami wsparcia i oporu. Wybicie zwykle w kierunku wcześniejszego trendu.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 260 150" role="img" aria-label="Chorągiewka">
+          <polyline points="10,130 45,50" fill="none" stroke="#4fd68c" stroke-width="2.4"/>
+          <polyline points="45,55 75,70 105,60 135,72 165,65" fill="none" stroke="#e0b15c" stroke-width="1.8"/>
+          <polyline points="165,68 200,15" fill="none" stroke="#4fd68c" stroke-width="2.4"/>
+        </svg>
+        <figcaption><strong>Chorągiewka (Pennant)</strong> — podobna do flagi, ale konsolidacja przypomina mały, symetryczny trójkąt zamiast równoległego kanału.</figcaption>
+      </figure>
+    </div>
+    <div class="panel"><span class="label">Jak odróżnić odwrócenie od kontynuacji</span>Kluczowy jest kontekst: formacja pojawiająca się w połowie długiego, silnego trendu częściej okazuje się kontynuacją; formacja pojawiająca się po długim, wyczerpanym ruchu (szczególnie z malejącym wolumenem) częściej zapowiada odwrócenie.</div>
+  </section>
+
+  <section id="fibonacci">
+    <span class="eyebrow">Rozdział 8</span>
+    <h2>Zniesienia Fibonacciego</h2>
+    <p>Poziomy zniesienia Fibonacciego (23,6% / 38,2% / 50% / 61,8% / 78,6%) wyznacza się między dwoma skrajnymi punktami ruchu (dołkiem i szczytem), aby przewidzieć, gdzie cena może się zatrzymać podczas korekty przed kontynuacją głównego trendu.</p>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Poziomy zniesienia Fibonacciego">
+        <line x1="0" y1="20" x2="560" y2="20" stroke="#3a4a42" stroke-width="1"/><text x="480" y="17" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">0%</text>
+        <line x1="0" y1="55" x2="560" y2="55" stroke="#3a4a42" stroke-width="1"/><text x="470" y="52" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">23,6%</text>
+        <line x1="0" y1="90" x2="560" y2="90" stroke="#e0b15c" stroke-width="1.2"/><text x="470" y="87" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">38,2%</text>
+        <line x1="0" y1="120" x2="560" y2="120" stroke="#e0b15c" stroke-width="1.4"/><text x="480" y="117" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">50%</text>
+        <line x1="0" y1="150" x2="560" y2="150" stroke="#e0b15c" stroke-width="1.2"/><text x="470" y="147" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">61,8%</text>
+        <line x1="0" y1="190" x2="560" y2="190" stroke="#3a4a42" stroke-width="1"/><text x="480" y="187" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">100%</text>
+        <polyline points="20,190 90,20 160,80 230,55 300,100 370,70 440,105 500,85" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+      </svg>
+      <figcaption>Po ruchu od dołka (100%) do szczytu (0%) cena wykonuje korektę i często zatrzymuje się właśnie na jednym z poziomów Fibonacciego — najczęściej 38,2% lub 61,8% — zanim wznowi główny trend.</figcaction>
+    </figure>
+    <h3>Dlaczego to działa</h3>
+    <p>Poziomy Fibonacciego są tak szeroko obserwowane przez traderów na całym świecie, że po części stają się samospełniającą się przepowiednią — skoro wielu uczestników rynku ustawia zlecenia właśnie w tych miejscach, sam ten fakt tworzy realne skupisko popytu lub podaży.</p>
+    <div class="panel warn"><span class="label">Uwaga</span>Fibonacci najlepiej sprawdza się jako narzędzie pomocnicze — łączone z innymi sygnałami (formacją świecową, wsparciem/oporem), a nie jako samodzielna metoda wejścia w pozycję.</div>
+
+    <h3>Rozszerzenia Fibonacciego (poza 100%)</h3>
+    <p>Poza zniesieniami (poziomami między 0% a 100% ruchu) istnieją też <strong>rozszerzenia</strong> — poziomy 127%, 161,8%, 261,8% — używane do wyznaczania potencjalnych celów (TP) poza punktem, w którym zaczęła się korekta. Działają na tej samej zasadzie: po zakończeniu korekty i wznowieniu trendu, cena często zatrzymuje się właśnie przy jednym z tych rozszerzonych poziomów.</p>
+    <h3>Jak praktycznie rysować zniesienie</h3>
+    <ol class="reg" style="list-style:decimal;">
+      <li>Zidentyfikuj wyraźny, w pełni ukształtowany ruch — od najniższego dołka do najwyższego szczytu (w trendzie wzrostowym).</li>
+      <li>Narysuj narzędzie Fibonacciego dokładnie między tymi dwoma punktami (dołek = 0% lub 100%, w zależności od konwencji narzędzia).</li>
+      <li>Obserwuj reakcję ceny przy każdym poziomie — najsilniejsze zwykle to 38,2%, 50% i 61,8%.</li>
+      <li>Szukaj potwierdzenia formacją świecową lub wolumenem dokładnie na jednym z tych poziomów, zamiast wchodzić w pozycję tylko dlatego, że cena "dotarła" do linii.</li>
+    </ol>
+  </section>
+
+  <section id="srednie">
+    <span class="eyebrow">Rozdział 9</span>
+    <h2>Średnie kroczące</h2>
+    <p>Średnia krocząca wygładza wahania ceny, ułatwiając odczytanie głównego kierunku trendu. Dwie najpopularniejsze to <strong>SMA</strong> (prosta średnia krocząca — równa waga wszystkich okresów) i <strong>EMA</strong> (wykładnicza — mocniej reaguje na ostatnie ceny).</p>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Złoty krzyż na wykresie ze średnimi kroczącymi">
+        <polyline points="10,170 60,150 110,160 160,120 210,130 260,90 310,100 360,60 410,70 460,35 510,45 550,20" fill="none" stroke="#4a5a52" stroke-width="1.6"/>
+        <polyline points="10,160 60,155 110,150 160,140 210,132 260,118 310,105 360,90 410,78 460,62 510,50 550,35" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        <polyline points="10,148 60,148 110,148 160,142 210,138 260,132 310,125 360,115 410,105 460,95 510,82 550,68" fill="none" stroke="#4fd68c" stroke-width="2"/>
+        <circle cx="345" cy="98" r="5" fill="#4fd68c" stroke="#0c1210" stroke-width="1.5"/>
+        <text x="358" y="102" fill="#4fd68c" font-family="IBM Plex Mono" font-size="11">Złoty Krzyż</text>
+        <text x="470" y="25" fill="#4a5a52" font-family="IBM Plex Mono" font-size="10">cena</text>
+        <text x="20" y="140" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">SMA 50</text>
+        <text x="20" y="165" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">SMA 200</text>
+      </svg>
+      <figcaption><strong>Złoty krzyż</strong> — krótsza średnia przecina dłuższą od dołu; uznawane za sygnał wzrostowy. Odwrotna sytuacja to "krzyż śmierci" — sygnał spadkowy.</figcaption>
+    </figure>
+    <div class="panel"><span class="label">SMA vs EMA</span>SMA jest bardziej wygładzona i mniej podatna na fałszywe sygnały, ale reaguje z opóźnieniem. EMA szybciej odzwierciedla bieżące zmiany ceny, kosztem większej liczby "szumów".</div>
+    <h3>Średnia jako dynamiczne wsparcie/opór</h3>
+    <p>W silnym trendzie wzrostowym cena często odbija się od popularnej średniej (np. SMA 50 czy EMA 21) niczym od linii wsparcia — działa ona wtedy jak "ruchoma" wersja klasycznego poziomu z rozdziału 4.</p>
+
+    <h3>Inne warianty średnich</h3>
+    <table>
+      <tr><th>Typ średniej</th><th>Charakterystyka</th></tr>
+      <tr><td>WMA (ważona)</td><td>Nadaje liniowo rosnącą wagę nowszym cenom — kompromis między SMA a EMA</td></tr>
+      <tr><td>HMA (Hull Moving Average)</td><td>Zaprojektowana, by maksymalnie zredukować opóźnienie przy zachowaniu gładkości — popularna wśród traderów krótkoterminowych</td></tr>
+      <tr><td>VWMA (ważona wolumenem)</td><td>Podobnie jak WMA, ale waga zależy od wolumenu danego okresu, nie tylko jego "świeżości"</td></tr>
+    </table>
+
+    <h3>Popularne okresy i ich zastosowanie</h3>
+    <ul>
+      <li><strong>SMA/EMA 9–21</strong> — krótkoterminowy kontekst, popularne w handlu dziennym (day trading)</li>
+      <li><strong>SMA/EMA 50</strong> — trend średnioterminowy, często obserwowany poziom dynamicznego wsparcia w trendzie</li>
+      <li><strong>SMA/EMA 100–200</strong> — trend długoterminowy; SMA 200 to jeden z najszerzej obserwowanych poziomów na rynkach na świecie, także w kryptowalutach</li>
+    </ul>
+
+    <h3>Problem "whipsaw" — fałszywe sygnały w rynku bocznym</h3>
+    <p>Największą słabością wszystkich strategii opartych na przecięciach średnich (jak złoty krzyż) jest zachowanie w konsolidacji — cena oscylując wokół średnich generuje serię szybko po sobie następujących, sprzecznych sygnałów kupna/sprzedaży ("whipsaw"), z których większość okazuje się fałszywa. Dlatego strategie na średnich kroczących najlepiej sprawdzają się w rynkach z wyraźnym trendem (wysoki ADX — rozdział 11), a gorzej w konsolidacji.</p>
+  </section>
+
+  <section id="bollinger">
+    <span class="eyebrow">Rozdział 10</span>
+    <h2>Wstęgi Bollingera</h2>
+    <p>Wstęgi Bollingera składają się ze średniej kroczącej (zwykle SMA 20) oraz dwóch pasm oddalonych o dwa odchylenia standardowe od tej średniej. Pasma automatycznie zawężają się w okresach niskiej zmienności i rozszerzają w okresach wysokiej zmienności.</p>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Wstęgi Bollingera z zawężeniem i rozszerzeniem">
+        <path d="M 10 60 C 100 55, 200 90, 280 95 C 360 98, 440 40, 550 25" fill="none" stroke="#3a4a42" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <path d="M 10 130 C 100 130, 200 115, 280 112 C 360 108, 440 150, 550 165" fill="none" stroke="#3a4a42" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <path d="M 10 95 C 100 92, 200 102, 280 103 C 360 103, 440 95, 550 95" fill="none" stroke="#e0b15c" stroke-width="1.4"/>
+        <polyline points="10,100 40,85 70,105 100,90 130,100 160,108 190,100 220,105 250,98 280,100 310,80 340,60 370,75 400,55 430,45 460,35 490,50 520,30 550,25" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <text x="200" y="130" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">zawężenie ("squeeze")</text>
+        <text x="420" y="20" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">rozszerzenie</text>
+      </svg>
+      <figcaption>Zawężenie wstęg ("Bollinger Squeeze") sygnalizuje malejącą zmienność i często poprzedza gwałtowny ruch cenowy — choć nie mówi z góry, w którą stronę.</figcaption>
+    </figure>
+    <div class="panel"><span class="label">Typowe zastosowanie</span>Dotknięcie górnej wstęgi bywa odczytywane jako lokalne wykupienie, dolnej — jako wyprzedanie. W silnym trendzie cena może jednak "jeździć" wzdłuż wstęgi przez dłuższy czas, więc samo dotknięcie pasma nie jest sygnałem odwrócenia — warto łączyć je z RSI lub formacją świecową.</div>
+
+    <h3>%B i szerokość wstęg (Bandwidth)</h3>
+    <p>Poza wizualną oceną, wstęgi Bollingera mają dwie przydatne pochodne miary: <strong>%B</strong> mówi precyzyjnie, gdzie w obrębie wstęg znajduje się aktualna cena (0 = dolna wstęga, 1 = górna wstęga, powyżej 1 = cena wybiła się ponad górną wstęgę), a <strong>Bandwidth</strong> pokazuje samą szerokość wstęg w czasie — jej gwałtowny spadek to liczbowa wersja "zawężenia" (squeeze) opisanego wcześniej.</p>
+    <div class="panel warn"><span class="label">Częsty błąd interpretacyjny</span>Wielu początkujących traktuje dotknięcie górnej wstęgi jako automatyczny sygnał sprzedaży. W silnym trendzie to błąd — cena potrafi "chodzić po wstędze" przez wiele świec z rzędu, a przedwczesne wejście przeciwko trendowi kończy się stratą. Wstęga pokazuje zmienność, nie kierunek.</div>
+  </section>
+
+  <section id="oscylatory">
+    <span class="eyebrow">Rozdział 11</span>
+    <h2>Oscylatory: RSI, MACD, Stochastic, ADX</h2>
+    <p>Oscylatory pomagają ocenić, czy rynek jest wykupiony lub wyprzedany, a także wychwycić rozbieżności między ceną a momentum.</p>
+    <h3>RSI (Relative Strength Index)</h3>
+    <figure>
+      <svg viewBox="0 0 560 160" role="img" aria-label="Wskaźnik RSI ze strefami wykupienia i wyprzedania">
+        <rect x="0" y="10" width="560" height="30" fill="#e0685c" opacity="0.12"/>
+        <rect x="0" y="120" width="560" height="30" fill="#4fd68c" opacity="0.12"/>
+        <line x1="0" y1="40" x2="560" y2="40" stroke="#e0685c" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="0" y1="120" x2="560" y2="120" stroke="#4fd68c" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="5" y="25" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">70 — wykupienie</text>
+        <text x="5" y="140" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">30 — wyprzedanie</text>
+        <polyline points="10,90 50,70 90,45 130,35 170,55 210,80 250,110 290,130 330,115 370,90 410,60 450,38 490,50 530,70" fill="none" stroke="#e9efe9" stroke-width="2"/>
+      </svg>
+      <figcaption>RSI oscyluje w przedziale 0–100. Najsilniejsze sygnały pojawiają się przy <strong>dywergencji</strong> — gdy cena rośnie, a RSI już spada (dywergencja niedźwiedzia), lub odwrotnie (dywergencja bycza).</figcaption>
+    </figure>
+    <h3>MACD (Moving Average Convergence Divergence)</h3>
+    <figure>
+      <svg viewBox="0 0 560 160" role="img" aria-label="Wskaźnik MACD z histogramem">
+        <line x1="0" y1="80" x2="560" y2="80" stroke="#3a4a42" stroke-width="1"/>
+        <g fill="#4fd68c" opacity="0.7"><rect x="20" y="60" width="8" height="20"/><rect x="40" y="45" width="8" height="35"/><rect x="60" y="30" width="8" height="50"/><rect x="80" y="40" width="8" height="40"/><rect x="100" y="55" width="8" height="25"/></g>
+        <g fill="#e0685c" opacity="0.7"><rect x="120" y="80" width="8" height="15"/><rect x="140" y="80" width="8" height="30"/><rect x="160" y="80" width="8" height="45"/><rect x="180" y="80" width="8" height="30"/><rect x="200" y="80" width="8" height="15"/></g>
+        <g fill="#4fd68c" opacity="0.7"><rect x="220" y="65" width="8" height="15"/><rect x="240" y="48" width="8" height="32"/><rect x="260" y="35" width="8" height="45"/><rect x="280" y="42" width="8" height="38"/><rect x="300" y="58" width="8" height="22"/></g>
+        <polyline points="20,55 60,30 100,50 140,85 180,100 220,60 260,32 300,55" fill="none" stroke="#e9efe9" stroke-width="1.8"/>
+        <polyline points="20,60 60,42 100,55 140,75 180,95 220,72 260,45 300,60" fill="none" stroke="#e0b15c" stroke-width="1.8"/>
+      </svg>
+      <figcaption>Linia MACD (biała) i linia sygnałowa (żółta) przecinają się, generując sygnały kupna/sprzedaży. Histogram pokazuje odległość między nimi.</figcaption>
+    </figure>
+    <h3>Stochastic Oscillator</h3>
+    <p>Porównuje bieżącą cenę zamknięcia z zakresem cen z ostatnich N okresów. Podobnie jak RSI, porusza się w skali 0–100, ze strefami wykupienia (powyżej 80) i wyprzedania (poniżej 20) — sprawdza się szczególnie dobrze na rynkach bocznych.</p>
+    <h3>ADX (Average Directional Index)</h3>
+    <p>W odróżnieniu od poprzednich, ADX nie mówi, w którą stronę zmierza rynek — mierzy jedynie <strong>siłę</strong> trendu, niezależnie od kierunku. Wartości powyżej 25 sugerują silny trend (warto stosować strategie podążające za trendem), wartości poniżej 20 sugerują rynek boczny (lepiej sprawdzą się oscylatory jak RSI czy Stochastic).</p>
+    <table>
+      <tr><th>Wskaźnik</th><th>Najlepiej sprawdza się</th><th>Na co uważać</th></tr>
+      <tr><td>RSI</td><td>Rynki boczne, wychwytywanie skrajności, dywergencje</td><td>W silnym trendzie może pozostać "wykupiony" bardzo długo</td></tr>
+      <tr><td>MACD</td><td>Potwierdzanie zmiany momentum</td><td>Sygnały opóźnione — nie nadaje się do bardzo krótkich interwałów</td></tr>
+      <tr><td>Stochastic</td><td>Rynki boczne, timing wejścia</td><td>Generuje dużo fałszywych sygnałów w trendzie</td></tr>
+      <tr><td>ADX</td><td>Filtrowanie: trend czy konsolidacja</td><td>Nie wskazuje kierunku, tylko siłę ruchu</td></tr>
+    </table>
+
+    <h3>Dostosowanie stref wykupienia/wyprzedania do kontekstu</h3>
+    <p>Standardowe poziomy 70/30 dla RSI są tylko punktem wyjścia. W silnym trendzie wzrostowym praktycy często przesuwają strefy do 80/40 — RSI rzadko spada poniżej 40, więc właśnie ten poziom, a nie klasyczne 30, staje się realną strefą do szukania okazji zgodnych z trendem. Analogicznie, w silnym trendzie spadkowym przesuwa się strefy w dół, do 60/20.</p>
+
+    <h3>Dywergencja ukryta (Hidden Divergence)</h3>
+    <p>Poza klasyczną dywergencją opisaną wcześniej (sygnalizującą odwrócenie), istnieje też dywergencja ukryta — sygnalizująca <strong>kontynuację</strong> trendu. Pojawia się, gdy cena robi wyższy dołek (w trendzie wzrostowym), a oscylator robi niższy dołek — to sugeruje, że korekta jest słabsza niż wygląda, i główny trend prawdopodobnie się utrzyma.</p>
+
+    <h3>On Balance Volume (OBV) — wolumen jako oscylator kumulowany</h3>
+    <p>OBV to prosty, ale użyteczny wskaźnik: dodaje cały wolumen z dnia wzrostowego i odejmuje cały wolumen z dnia spadkowego, tworząc jedną, narastającą linię. Rosnący OBV przy rosnącej cenie potwierdza trend; sytuacja, w której cena rośnie, a OBV zaczyna spadać, to dywergencja ostrzegająca przed osłabieniem ruchu — analogicznie do dywergencji RSI, ale liczona bezpośrednio na wolumenie.</p>
+  </section>
+
+  <section id="wolumen">
+    <span class="eyebrow">Rozdział 12</span>
+    <h2>Wolumen — potwierdzenie ruchu</h2>
+    <p>Wolumen to liczba zawartych transakcji w danym okresie. Zasada mówi, że <strong>wolumen powinien rosnąć w kierunku trendu</strong> — jego brak przy istotnym ruchu ceny jest ostrzeżeniem.</p>
+    <figure>
+      <svg viewBox="0 0 500 180" role="img" aria-label="Wykres ceny z wolumenem potwierdzającym wybicie">
+        <polyline points="10,90 60,80 110,85 160,60 210,65 260,30 310,40 360,15" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <g fill="#4a5a52"><rect x="6" y="140" width="8" height="20"/><rect x="56" y="145" width="8" height="15"/><rect x="106" y="142" width="8" height="18"/><rect x="156" y="130" width="8" height="30"/></g>
+        <g fill="#4fd68c"><rect x="206" y="120" width="8" height="40"/><rect x="256" y="90" width="8" height="70"/><rect x="306" y="100" width="8" height="60"/><rect x="356" y="70" width="8" height="90"/></g>
+        <text x="200" y="112" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">wybicie + wzrost wolumenu</text>
+      </svg>
+      <figcaption>Wybicie na wyraźnie zwiększonym wolumenie (zielone słupki) jest bardziej wiarygodne niż wybicie na niskim wolumenie — to drugie częściej okazuje się fałszywym sygnałem.</figcaption>
+    </figure>
+    <h3>Wolumen a formacje</h3>
+    <ul>
+      <li>W formacji głowy i ramion wolumen zwykle maleje z każdym kolejnym szczytem — spadek "paliwa" napędzającego wzrosty.</li>
+      <li>Przy trójkątach wolumen typowo zanika w trakcie konsolidacji i gwałtownie wzrasta w momencie wybicia.</li>
+      <li>Fałszywe wybicie (tzw. "byk pułapka" / "niedźwiedź pułapka") często charakteryzuje się niskim wolumenem i szybkim powrotem ceny do poprzedniego zakresu.</li>
+    </ul>
+
+    <h3>Klimaks wolumenu (Volume Climax)</h3>
+    <p>Nagły, ekstremalny skok wolumenu — znacznie większy niż przeciętna z ostatnich okresów — często oznacza kulminację ruchu, a nie jego kontynuację. Taki "klimaks" bywa spotykany albo na samym szczycie euforii (kapitulacja kupujących), albo na samym dnie paniki (kapitulacja sprzedających) — w obu przypadkach jest to sygnał, że dotychczasowy ruch traci ostatnich, najbardziej zdesperowanych uczestników i zbliża się do wyczerpania.</p>
+  </section>
+
+  <section id="interwaly">
+    <span class="eyebrow">Rozdział 13</span>
+    <h2>Analiza wielu interwałów czasowych</h2>
+    <p>Doświadczeni traderzy rzadko patrzą tylko na jeden interwał. Typowe podejście to analiza "z góry na dół": najpierw sprawdza się trend główny na wykresie wyższego rzędu (np. tygodniowym lub dziennym), a dopiero potem szuka się dokładnego punktu wejścia na niższym interwale (np. godzinowym).</p>
+    <table>
+      <tr><th>Interwał</th><th>Do czego służy</th></tr>
+      <tr><td>Tygodniowy / dzienny</td><td>Ustalenie trendu głównego i kluczowych poziomów wsparcia/oporu</td></tr>
+      <tr><td>H4 / H1</td><td>Doprecyzowanie struktury trendu wtórnego, formacje średnioterminowe</td></tr>
+      <tr><td>M15 / M5</td><td>Precyzyjny timing wejścia i wyjścia z pozycji</td></tr>
+    </table>
+    <div class="panel"><span class="label">Zasada praktyczna</span>Sygnał na niższym interwale zgodny z kierunkiem trendu z wyższego interwału ma zdecydowanie większą wiarygodność niż sygnał sprzeczny z szerszym obrazem rynku.</div>
+  </section>
+
+  <section id="ryzyko">
+    <span class="eyebrow">Rozdział 14</span>
+    <h2>Zarządzanie ryzykiem i psychologia</h2>
+    <p>Najlepsza znajomość formacji i wskaźników nie obroni kapitału bez dyscypliny w zarządzaniu ryzykiem. To najczęściej pomijany, a najważniejszy element całej analizy technicznej.</p>
+    <h3>Stop-loss</h3>
+    <p>Z góry określony poziom, przy którym pozycja zostaje automatycznie zamknięta, aby ograniczyć stratę. Logiczne miejsce na stop-loss to zwykle tuż za istotnym poziomem wsparcia/oporu lub linią trendu — miejsce, w którym scenariusz analizy przestaje być prawdziwy.</p>
+    <h3>Stosunek zysku do ryzyka (Risk:Reward)</h3>
+    <div class="panel"><span class="label">Przykład</span>Jeśli ryzykujesz 100 zł (odległość do stop-loss) w zamian za potencjalny zysk 300 zł (odległość do celu), stosunek R:R wynosi 1:3. Przy takim układzie strategia może być zyskowna nawet przy skuteczności poniżej 50%.</div>
+    <h3>Wielkość pozycji</h3>
+    <p>Popularna zasada mówi, by nie ryzykować więcej niż 1–2% kapitału na pojedynczą transakcję. Dzięki temu seria kilku nietrafionych transakcji z rzędu nie eliminuje możliwości dalszego handlu.</p>
+    <h3>Częste błędy psychologiczne</h3>
+    <ul>
+      <li><strong>FOMO (strach przed przegapieniem okazji)</strong> — wejście w pozycję pod wpływem euforii, już po większości ruchu, bez spełnionych warunków własnej strategii.</li>
+      <li><strong>Zemsta rynkowa (revenge trading)</strong> — próba natychmiastowego "odbicia" straty poprzez zwiększenie wielkości kolejnej pozycji.</li>
+      <li><strong>Efekt potwierdzenia (confirmation bias)</strong> — szukanie wyłącznie argumentów zgodnych z już otwartą pozycją i ignorowanie sygnałów przeciwnych.</li>
+      <li><strong>Zbyt wczesne realizowanie zysków</strong> — zamykanie zyskownej pozycji przy pierwszej okazji ze strachu, że rynek "odbierze" zysk, podczas gdy strategia zakładała dalszy ruch.</li>
+    </ul>
+
+    <h3>Dlaczego większość początkujących traci pieniądze — nie brak wiedzy, a brak dyscypliny</h3>
+    <p>Paradoksalnie, najczęstszą przyczyną strat nie jest nieznajomość formacji czy wskaźników z poprzednich rozdziałów, tylko niekonsekwentne stosowanie własnych zasad. Trader, który zna 20 formacji, ale za każdym razem inaczej ustala wielkość pozycji i regularnie przesuwa stop-loss "żeby dać cenie więcej miejsca", statystycznie radzi sobie gorzej niż trader znający tylko 3 formacje, ale trzymający się sztywno wcześniej ustalonych zasad.</p>
+    <h3>Dziennik emocji — uzupełnienie dziennika transakcji</h3>
+    <p>Poza faktami transakcyjnymi (rozdział 28), warto zapisywać też stan emocjonalny przed i po transakcji — poziom pewności, obecność presji czasu, czy decyzja zapadła pod wpływem czyjejś opinii z zewnątrz (grupa na Discordzie, wpis na X). Po kilkudziesięciu wpisach zwykle widać wyraźny wzorzec: określone stany emocjonalne (np. "chcę się odegrać" albo "boję się przegapić") systematycznie poprzedzają najgorsze decyzje.</p>
+    <div class="panel warn"><span class="label">Uwaga</span>Żadna formacja ani wskaźnik nie daje gwarancji. Analiza techniczna operuje na prawdopodobieństwach, nie pewnikach. Handel kryptowalutami i instrumentami z dźwignią wiąże się z wysokim ryzykiem utraty kapitału — ten materiał ma charakter wyłącznie edukacyjny i nie stanowi rekomendacji inwestycyjnej.</div>
+  </section>
+
+  <section id="elliott">
+    <span class="eyebrow">Rozdział 15</span>
+    <h2>Fale Elliotta</h2>
+    <p>Teoria fal Elliotta zakłada, że rynek porusza się w powtarzalnym, ośmiofalowym rytmie: pięć fal <strong>impulsu</strong> zgodnych z głównym trendem (ponumerowanych 1–5), po których następują trzy fale <strong>korekty</strong> (oznaczone literami A–B–C).</p>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Pięć fal impulsu i trzy fale korekty Elliotta">
+        <polyline points="10,190 70,110 120,150 180,60 230,100 300,20 340,70 400,110 440,80 500,150" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <text x="55" y="105" fill="#4fd68c" font-family="IBM Plex Mono" font-size="12">1</text>
+        <text x="112" y="145" fill="#e0685c" font-family="IBM Plex Mono" font-size="12">2</text>
+        <text x="222" y="55" fill="#4fd68c" font-family="IBM Plex Mono" font-size="12">3</text>
+        <text x="292" y="95" fill="#e0685c" font-family="IBM Plex Mono" font-size="12">4</text>
+        <text x="332" y="16" fill="#4fd68c" font-family="IBM Plex Mono" font-size="12">5</text>
+        <text x="392" y="106" fill="#e0b15c" font-family="IBM Plex Mono" font-size="12">A</text>
+        <text x="432" y="76" fill="#e0b15c" font-family="IBM Plex Mono" font-size="12">B</text>
+        <text x="492" y="146" fill="#e0b15c" font-family="IBM Plex Mono" font-size="12">C</text>
+      </svg>
+      <figcaption>Fale 1, 3, 5 pchają cenę w kierunku głównego trendu; fale 2 i 4 to korekty w trakcie impulsu. Po zakończeniu fali 5 następuje trzyfalowa korekta A-B-C w przeciwnym kierunku.</figcaption>
+    </figure>
+    <h3>Kluczowe reguły fal impulsu</h3>
+    <ul>
+      <li>Fala 2 nigdy nie cofa się poniżej początku fali 1.</li>
+      <li>Fala 3 nigdy nie jest najkrótszą z fal 1, 3 i 5 — bardzo często jest wręcz najdłuższa.</li>
+      <li>Fala 4 nie wchodzi w zakres cenowy fali 1 (poza rzadkimi wyjątkami).</li>
+    </ul>
+    <p>Fale Elliotta mają charakter <strong>fraktalny</strong> — każda fala impulsu sama w sobie składa się z mniejszych pięciu fal, a każda fala korekty z mniejszych trzech, niezależnie od interwału czasowego.</p>
+    <div class="panel warn"><span class="label">Uwaga</span>Liczenie fal jest w dużym stopniu subiektywne — dwóch analityków patrzących na ten sam wykres często wskaże różny podział fal. Warto traktować tę metodę jako dodatkową perspektywę, nie jako precyzyjne narzędzie samo w sobie.</div>
+  </section>
+
+  <section id="pf">
+    <span class="eyebrow">Rozdział 16</span>
+    <h2>Wykresy Punktowo-Symboliczne (Point & Figure)</h2>
+    <p>Wykres Point & Figure całkowicie pomija czas — zapisuje wyłącznie zmiany ceny powyżej ustalonego progu, ignorując okresy bez istotnego ruchu. Wzrosty oznacza się kolumną znaków „X", spadki kolumną znaków „O".</p>
+    <figure>
+      <svg viewBox="0 0 400 200" role="img" aria-label="Wykres punktowo-symboliczny X i O">
+        <g font-family="IBM Plex Mono" font-size="16" text-anchor="middle">
+          <g fill="#4fd68c"><text x="30" y="170">X</text><text x="30" y="150">X</text><text x="30" y="130">X</text></g>
+          <g fill="#e0685c"><text x="70" y="150">O</text><text x="70" y="130">O</text></g>
+          <g fill="#4fd68c"><text x="110" y="130">X</text><text x="110" y="110">X</text><text x="110" y="90">X</text><text x="110" y="70">X</text></g>
+          <g fill="#e0685c"><text x="150" y="90">O</text><text x="150" y="70">O</text><text x="150" y="50">O</text></g>
+          <g fill="#4fd68c"><text x="190" y="70">X</text><text x="190" y="50">X</text><text x="190" y="30">X</text></g>
+        </g>
+      </svg>
+      <figcaption>Kolumna X-ów rośnie, dopóki cena kontynuuje wzrost o ustaloną wielkość "kratki"; zmiana kierunku o odpowiedni próg (zwykle 3 kratki) rozpoczyna nową kolumnę O.</figcaption>
+    </figure>
+    <p>Ponieważ metoda ignoruje czas i drobne wahania, formacje wsparcia/oporu, linie trendu (rysowane tu pod kątem 45°) i formacje odwrócenia (np. odpowiednik głowy i ramion) rysują się na niej wyjątkowo czysto, bez "szumu" typowego dla wykresów świecowych.</p>
+  </section>
+
+  <section id="miedzyrynkowa">
+    <span class="eyebrow">Rozdział 17</span>
+    <h2>Analiza międzyrynkowa</h2>
+    <p>Żaden rynek nie istnieje w próżni — analiza międzyrynkowa bada zależności między różnymi klasami aktywów, żeby lepiej zrozumieć, co napędza dany instrument.</p>
+    <table>
+      <tr><th>Para rynków</th><th>Typowa zależność</th></tr>
+      <tr><td>Dolar amerykański ↔ Surowce</td><td>Silny dolar zwykle działa jako obciążenie dla cen surowców wycenianych w USD</td></tr>
+      <tr><td>Rentowności obligacji ↔ Akcje</td><td>Gwałtowny wzrost rentowności często wywiera presję na wyceny spółek wzrostowych</td></tr>
+      <tr><td>Bitcoin ↔ Altcoiny (dominacja BTC)</td><td>Spadająca dominacja BTC często towarzyszy okresom mocniejszego ruchu na altcoinach ("altseason")</td></tr>
+      <tr><td>Indeksy giełdowe ↔ Krypto</td><td>W ostatnich latach kryptowaluty bywają skorelowane z nastrojami na rynku akcji technologicznych (risk-on / risk-off)</td></tr>
+    </table>
+    <div class="panel"><span class="label">Zastosowanie praktyczne</span>Zanim ocenisz wykres pojedynczego aktywa, warto sprawdzić, czy powiązane z nim rynki potwierdzają ten sam kierunek — to rozwinięcie czwartej zasady Teorii Dowa z rozdziału 1.</div>
+  </section>
+
+  <section id="cykle">
+    <span class="eyebrow">Rozdział 18</span>
+    <h2>Cykle i sezonowość</h2>
+    <p>Analiza cykli bada powtarzalne, w przybliżeniu regularne wahania cen w czasie — np. cykle koniunkturalne (kilkuletnie), cykle sezonowe (w skali roku) czy cykle w obrębie tygodnia handlowego.</p>
+    <figure>
+      <svg viewBox="0 0 560 140" role="img" aria-label="Powtarzalny cykl cenowy">
+        <path d="M 10 100 Q 80 20, 150 100 T 290 100 T 430 100 T 560 100" fill="none" stroke="#4fd68c" stroke-width="2"/>
+        <line x1="10" y1="100" x2="560" y2="100" stroke="#3a4a42" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
+      <figcaption>Uproszczona ilustracja cyklu — cena oscyluje wokół linii centralnej z w miarę regularnym rytmem, choć amplituda i długość poszczególnych cykli w praktyce się różnią.</figcaption>
+    </figure>
+    <p>W kryptowalutach szczególnie popularna jest obserwacja cykli powiązanych z <strong>halvingiem Bitcoina</strong> — historycznie po każdym halvingu (redukcji nagrody za wydobycie o połowę) obserwowano wielomiesięczne trendy wzrostowe, choć nie jest to gwarancja przyszłych powtórzeń.</p>
+    <div class="panel warn"><span class="label">Uwaga</span>Cykle bywają zawodne — zewnętrzne szoki (decyzje regulacyjne, wydarzenia makro) mogą całkowicie zaburzyć oczekiwany rytm. Traktuj analizę cykli jako kontekst, nie jako pewnik.</div>
+  </section>
+
+  <section id="luki">
+    <span class="eyebrow">Rozdział 19</span>
+    <h2>Luki cenowe (Gap)</h2>
+    <p>Luka powstaje, gdy cena otwarcia kolejnego okresu znacząco różni się od ceny zamknięcia poprzedniego, zostawiając na wykresie "pustą" przestrzeń bez transakcji.</p>
+    <div class="grid-3">
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Luka wybicia">
+          <polyline points="10,110 40,95 70,100 90,90" fill="none" stroke="#a9b8ae" stroke-width="1.8"/>
+          <polyline points="105,50 130,40 150,30" fill="none" stroke="#4fd68c" stroke-width="2"/>
+        </svg>
+        <figcaption><strong>Luka wybicia (Breakaway Gap)</strong> — pojawia się na początku nowego, silnego ruchu, często przy przełamaniu ważnego poziomu.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Luka kontynuacji">
+          <polyline points="10,120 40,90 70,60" fill="none" stroke="#4fd68c" stroke-width="2"/>
+          <polyline points="85,45 110,25 150,10" fill="none" stroke="#4fd68c" stroke-width="2"/>
+        </svg>
+        <figcaption><strong>Luka kontynuacji (Runaway Gap)</strong> — powstaje w środku silnego trendu i potwierdza jego siłę.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Luka wyczerpania">
+          <polyline points="10,120 40,80 70,40" fill="none" stroke="#4fd68c" stroke-width="2"/>
+          <polyline points="85,20 110,15" fill="none" stroke="#e0685c" stroke-width="2"/>
+          <polyline points="110,15 150,70" fill="none" stroke="#e0685c" stroke-width="2" stroke-dasharray="4 3"/>
+        </svg>
+        <figcaption><strong>Luka wyczerpania (Exhaustion Gap)</strong> — pojawia się pod koniec długiego trendu, tuż przed odwróceniem — cena szybko ją "zamyka".</figcaption>
+      </figure>
+    </div>
+    <p>Popularna zasada mówi, że „luki mają tendencję do zamykania się" — czyli cena prędzej czy później wraca do wypełnienia pustej przestrzeni. To prawda głównie dla luk wyczerpania; luki wybicia i kontynuacji bywają zamykane dopiero po bardzo długim czasie, jeśli w ogóle.</p>
+  </section>
+
+  <section id="plan">
+    <span class="eyebrow">Rozdział 20</span>
+    <h2>Budowa własnego planu tradingowego</h2>
+    <p>Plan tradingowy to spisany zestaw zasad, które usuwają emocjonalne decyzje z procesu handlu. Powinien odpowiadać na poniższe pytania, zanim jeszcze otworzysz pozycję:</p>
+    <table>
+      <tr><th>Element planu</th><th>Pytanie, na które odpowiada</th></tr>
+      <tr><td>Kryteria wejścia</td><td>Jakie dokładnie warunki (formacja, wskaźnik, poziom) muszą się spełnić, by wejść w pozycję?</td></tr>
+      <tr><td>Wielkość pozycji</td><td>Jaki % kapitału ryzykuję na tę konkretną transakcję?</td></tr>
+      <tr><td>Stop-loss</td><td>Przy jakim poziomie scenariusz przestaje być prawdziwy i trzeba wyjść ze stratą?</td></tr>
+      <tr><td>Cel / take-profit</td><td>Gdzie realistycznie mogę oczekiwać realizacji zysku, uwzględniając R:R?</td></tr>
+      <tr><td>Interwał i kontekst</td><td>Na jakim wykresie działam i czy trend wyższego rzędu potwierdza kierunek?</td></tr>
+      <tr><td>Warunki unieważnienia</td><td>Co konkretnie sprawi, że wycofam się z transakcji jeszcze przed stop-lossem?</td></tr>
+    </table>
+    <div class="panel"><span class="label">Dlaczego to działa</span>Plan spisany <em>przed</em> wejściem w pozycję eliminuje decyzje podejmowane pod wpływem emocji w trakcie trwania transakcji — moment, w którym najczęściej popełnia się kosztowne błędy opisane w rozdziale 14.</div>
+  </section>
+
+  <section id="backtest">
+    <span class="eyebrow">Rozdział 21</span>
+    <h2>Backtesting i statystyka skuteczności</h2>
+    <p>Backtesting to sprawdzanie, jak dana strategia radziła sobie na danych historycznych, zanim zaryzykujesz na niej realny kapitał. Nawet prosty, ręczny backtest na 50–100 historycznych sygnałach daje znacznie więcej informacji niż subiektywne wrażenie „ta strategia wygląda nieźle".</p>
+    <h3>Kluczowe metryki</h3>
+    <table>
+      <tr><th>Metryka</th><th>Co mówi</th></tr>
+      <tr><td>Win rate</td><td>Odsetek transakcji zakończonych zyskiem</td></tr>
+      <tr><td>Średni R:R</td><td>Przeciętny stosunek zysku do ryzyka w udanych transakcjach</td></tr>
+      <tr><td>Oczekiwana wartość (expectancy)</td><td>(win rate × średni zysk) − (odsetek strat × średnia strata) — realny "edge" strategii</td></tr>
+      <tr><td>Maksymalne obsunięcie kapitału (drawdown)</td><td>Największy spadek wartości konta od szczytu do dołka w badanym okresie</td></tr>
+    </table>
+    <div class="panel warn"><span class="label">Pułapka</span>Strategia ze skutecznością zaledwie 35% może być bardzo zyskowna przy R:R 1:4, a strategia ze skutecznością 70% może przynosić straty przy R:R 1:0,3. Sam „win rate" bez kontekstu stosunku zysku do ryzyka nic nie mówi o realnej opłacalności strategii.</div>
+  </section>
+
+  <section id="wyckoff">
+    <span class="eyebrow">Rozdział 22</span>
+    <h2>Metoda Wyckoffa</h2>
+    <p>Richard Wyckoff opracował metodę opisującą, jak duzi, dobrze poinformowani gracze ("smart money") budują i likwidują pozycje, nie wywołując gwałtownych ruchów ceny. Metoda ta jest dziś wyjątkowo popularna w społeczności kryptowalutowej.</p>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Schemat akumulacji i dystrybucji Wyckoffa">
+        <line x1="0" y1="150" x2="560" y2="150" stroke="#3a4a42" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="0" y1="60" x2="560" y2="60" stroke="#3a4a42" stroke-width="1" stroke-dasharray="3 3"/>
+        <polyline points="10,50 40,140 70,90 100,145 130,95 160,148 190,100 220,120 260,60 300,110 340,50 380,100 420,40 460,90 500,30 540,15"
+                  fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <text x="60" y="165" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">akumulacja</text>
+        <text x="330" y="35" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">markup ↑</text>
+      </svg>
+      <figcaption>Faza akumulacji (boczny zakres z licznymi "testami" dołka) poprzedza fazę markup (silny trend wzrostowy) — analogiczna sytuacja na szczycie to dystrybucja, po której następuje markdown (spadek).</figcaption>
+    </figure>
+    <h3>Cztery fazy cyklu Wyckoffa</h3>
+    <table>
+      <tr><th>Faza</th><th>Co się dzieje</th></tr>
+      <tr><td>Akumulacja</td><td>Duzi gracze cicho kupują w wąskim zakresie, podczas gdy sentyment publiczny jest wciąż negatywny</td></tr>
+      <tr><td>Markup</td><td>Cena wybija zakres i rusza w silny trend wzrostowy, dołącza coraz szersza rzesza inwestorów</td></tr>
+      <tr><td>Dystrybucja</td><td>Duzi gracze cicho sprzedają w wąskim zakresie na szczycie, podczas gdy publiczność wciąż kupuje w euforii</td></tr>
+      <tr><td>Markdown</td><td>Cena łamie zakres w dół i rozpoczyna trend spadkowy</td></tr>
+    </table>
+    <div class="panel"><span class="label">Kluczowe pojęcie</span><strong>Spring</strong> — chwilowe, fałszywe przebicie dołka zakresu akumulacji, które szybko zostaje odrzucone. To klasyczna "pułapka na niedźwiedzie", po której często zaczyna się właściwy markup.</div>
+  </section>
+
+  <section id="ichimoku">
+    <span class="eyebrow">Rozdział 23</span>
+    <h2>Ichimoku Kinko Hyo</h2>
+    <p>Ichimoku to kompletny system analityczny opracowany w Japonii, łączący w jednym wskaźniku informację o trendzie, momentum i poziomach wsparcia/oporu. Składa się z pięciu linii, z których dwie tworzą charakterystyczną "chmurę" (Kumo).</p>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Chmura Ichimoku z liniami Tenkan i Kijun">
+        <polygon points="150,80 200,60 250,70 300,50 350,65 400,55 400,120 350,110 300,95 250,115 200,100 150,130" fill="#4fd68c" opacity="0.18"/>
+        <polyline points="150,80 200,60 250,70 300,50 350,65 400,55" fill="none" stroke="#4fd68c" stroke-width="1.6"/>
+        <polyline points="150,130 200,100 250,115 300,95 350,110 400,120" fill="none" stroke="#e0685c" stroke-width="1.6"/>
+        <polyline points="10,110 60,95 110,105 150,90 200,80 250,90 300,75 350,85 400,70 450,80" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <polyline points="60,100 110,98 160,92 210,88" fill="none" stroke="#e0b15c" stroke-width="1.6"/>
+        <text x="410" y="60" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">chmura (Kumo)</text>
+      </svg>
+      <figcaption>Cena powyżej chmury sugeruje trend wzrostowy, poniżej — spadkowy. Grubość chmury odzwierciedla siłę potencjalnego wsparcia/oporu — im grubsza, tym trudniej ją przełamać.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Linia</th><th>Znaczenie</th></tr>
+      <tr><td>Tenkan-sen</td><td>Krótkoterminowa linia konwersji — szybko reaguje na zmiany ceny</td></tr>
+      <tr><td>Kijun-sen</td><td>Linia bazowa — wolniejsza, działa jak dynamiczne wsparcie/opór</td></tr>
+      <tr><td>Senkou Span A / B</td><td>Dwie linie tworzące chmurę Kumo, rysowane z wyprzedzeniem czasowym</td></tr>
+      <tr><td>Chikou Span</td><td>Linia opóźniona — bieżąca cena przesunięta wstecz, pomaga potwierdzić trend</td></tr>
+    </table>
+  </section>
+
+  <section id="sar-pivot">
+    <span class="eyebrow">Rozdział 24</span>
+    <h2>Parabolic SAR i Punkty Obrotu (Pivot Points)</h2>
+    <h3>Parabolic SAR</h3>
+    <p>Wskaźnik rysowany jako seria kropek nad lub pod ceną, wyznaczający dynamiczny poziom potencjalnego odwrócenia trendu (Stop And Reverse). Kropki pod ceną sugerują trend wzrostowy, kropki nad ceną — spadkowy; "przeskoczenie" kropek na drugą stronę sygnalizuje możliwą zmianę trendu.</p>
+    <figure>
+      <svg viewBox="0 0 500 150" role="img" aria-label="Wskaźnik Parabolic SAR">
+        <polyline points="10,120 60,100 110,80 160,60 210,45 260,35 300,50 340,70 380,90 420,105" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <g fill="#4fd68c">
+          <circle cx="60" cy="115" r="3"/><circle cx="110" cy="98" r="3"/><circle cx="160" cy="78" r="3"/>
+          <circle cx="210" cy="62" r="3"/><circle cx="260" cy="50" r="3"/>
+        </g>
+        <g fill="#e0685c">
+          <circle cx="300" cy="35" r="3"/><circle cx="340" cy="52" r="3"/><circle cx="380" cy="72" r="3"/><circle cx="420" cy="90" r="3"/>
+        </g>
+      </svg>
+      <figcaption>Zielone kropki pod ceną = trend wzrostowy. Gdy kropki "przeskakują" nad cenę (czerwone), sygnalizuje to możliwe odwrócenie na spadki.</figcaption>
+    </figure>
+    <h3>Punkty obrotu (Pivot Points)</h3>
+    <p>Punkty obrotu to poziomy wsparcia i oporu wyliczane matematycznie na podstawie maksimum, minimum i zamknięcia poprzedniego okresu (np. poprzedniej doby). Szczególnie popularne w handlu krótkoterminowym — wyznaczają "z góry" konkretne poziomy na dany dzień, zanim jeszcze rozpocznie się sesja.</p>
+    <div class="panel"><span class="label">Wzór podstawowy</span><span class="mono">Pivot (P) = (Max + Min + Zamknięcie) / 3</span> — od tej wartości wylicza się kolejne poziomy wsparcia (S1, S2, S3) i oporu (R1, R2, R3) w oparciu o zakres poprzedniego okresu.</div>
+  </section>
+
+  <section id="vwap">
+    <span class="eyebrow">Rozdział 25</span>
+    <h2>VWAP (Volume Weighted Average Price)</h2>
+    <p>VWAP to średnia cena ważona wolumenem — w odróżnieniu od zwykłej średniej kroczącej, każda cena wpływa na wynik proporcjonalnie do wolumenu, przy jakim została zawarta. Wskaźnik resetuje się zwykle na początku każdej sesji/doby.</p>
+    <figure>
+      <svg viewBox="0 0 500 150" role="img" aria-label="Cena wraz z linią VWAP">
+        <polyline points="10,100 60,90 110,110 160,80 210,95 260,60 310,75 360,50 410,65 450,40" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <polyline points="10,105 60,100 110,98 160,92 210,90 260,82 310,80 360,72 410,68 450,60" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        <text x="360" y="30" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">VWAP</text>
+      </svg>
+      <figcaption>Cena powyżej VWAP sugeruje przewagę kupujących w danej sesji, poniżej — przewagę sprzedających. Instytucje często wykorzystują VWAP jako punkt odniesienia przy realizacji dużych zleceń.</figcaption>
+    </figure>
+  </section>
+
+  <section id="swiece2">
+    <span class="eyebrow">Rozdział 26</span>
+    <h2>Więcej formacji świecowych</h2>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Formacja Harami">
+          <line x1="60" y1="30" x2="60" y2="100" stroke="#e0685c" stroke-width="1.6"/><rect x="48" y="38" width="24" height="55" fill="#e0685c"/>
+          <line x1="60" y1="55" x2="60" y2="80" stroke="#4fd68c" stroke-width="1.6"/><rect x="52" y="58" width="16" height="18" fill="#4fd68c"/>
+        </svg>
+        <figcaption><strong>Harami</strong> — mała świeca w całości zawarta w korpusie poprzedniej, dużej świecy. Sygnalizuje wygasanie momentum i możliwe odwrócenie.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Formacja przenikania">
+          <line x1="55" y1="30" x2="55" y2="90" stroke="#e0685c" stroke-width="1.6"/><rect x="45" y="38" width="20" height="45" fill="#e0685c"/>
+          <line x1="105" y1="45" x2="105" y2="115" stroke="#4fd68c" stroke-width="1.6"/><rect x="95" y="60" width="20" height="45" fill="#4fd68c"/>
+        </svg>
+        <figcaption><strong>Przenikanie (Piercing Line)</strong> — zielona świeca otwiera się poniżej minimum poprzedniej czerwonej, ale zamyka powyżej połowy jej korpusu. Sygnał zwrotu na wzrosty.</figcaption>
+      </figure>
+    </div>
+    <div class="grid-2">
+      <figure>
+        <svg viewBox="0 0 160 140" role="img" aria-label="Zasłona ciemnej chmury">
+          <line x1="55" y1="40" x2="55" y2="100" stroke="#4fd68c" stroke-width="1.6"/><rect x="45" y="50" width="20" height="45" fill="#4fd68c"/>
+          <line x1="105" y1="25" x2="105" y2="90" stroke="#e0685c" stroke-width="1.6"/><rect x="95" y="35" width="20" height="40" fill="#e0685c"/>
+        </svg>
+        <figcaption><strong>Zasłona ciemnej chmury (Dark Cloud Cover)</strong> — lustrzane odbicie przenikania: czerwona świeca otwiera się powyżej maksimum poprzedniej zielonej, ale zamyka poniżej połowy jej korpusu.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 200 140" role="img" aria-label="Trzy czarne kruki">
+          <line x1="25" y1="30" x2="25" y2="60" stroke="#e0685c" stroke-width="1.4"/><rect x="18" y="32" width="14" height="25" fill="#e0685c"/>
+          <line x1="70" y1="55" x2="70" y2="90" stroke="#e0685c" stroke-width="1.4"/><rect x="63" y="58" width="14" height="28" fill="#e0685c"/>
+          <line x1="115" y1="80" x2="115" y2="118" stroke="#e0685c" stroke-width="1.4"/><rect x="108" y="83" width="14" height="30" fill="#e0685c"/>
+        </svg>
+        <figcaption><strong>Trzy czarne kruki</strong> — trzy kolejne spadające czerwone świece o podobnej wielkości. Lustrzane odbicie trzech białych żołnierzy — silne potwierdzenie trendu spadkowego.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="kelly">
+    <span class="eyebrow">Rozdział 27</span>
+    <h2>Kelly Criterion i zaawansowany position sizing</h2>
+    <p>Kryterium Kelly'ego to matematyczny wzór wyliczający optymalny procent kapitału do zaryzykowania na pojedynczą transakcję, na podstawie historycznej skuteczności strategii i przeciętnego stosunku zysku do straty.</p>
+    <div class="panel"><span class="label">Wzór</span><span class="mono">f* = W − [(1 − W) / R]</span><br>gdzie <span class="mono">W</span> to win rate (np. 0,45), a <span class="mono">R</span> to stosunek średniego zysku do średniej straty (np. 2). Wynik <span class="mono">f*</span> to sugerowany ułamek kapitału na transakcję.</div>
+    <p>W praktyce niemal nikt nie stosuje pełnego Kelly — zbyt duża zmienność wyników potrafi szybko wyczyścić konto nawet przy matematycznie "optymalnej" strategii. Popularne jest stosowanie <strong>ułamkowego Kelly</strong> (np. 1/4 lub 1/2 wyliczonej wartości) jako bezpieczniejszego kompromisu, często i tak ograniczanego dodatkowo do wspomnianych wcześniej 1–2% kapitału na transakcję.</p>
+  </section>
+
+  <section id="dziennik">
+    <span class="eyebrow">Rozdział 28</span>
+    <h2>Szablon dziennika transakcji</h2>
+    <p>Dziennik transakcji to najprostsze narzędzie, które realnie przyspiesza naukę — pozwala zobaczyć na chłodno, czy trzymasz się własnego planu, i wychwycić powtarzające się błędy.</p>
+    <table>
+      <tr><th>Pole</th><th>Co wpisać</th></tr>
+      <tr><td>Data i instrument</td><td>Kiedy i na czym otwarto pozycję</td></tr>
+      <tr><td>Kierunek i interwał</td><td>Long/short, na jakim wykresie podjęto decyzję</td></tr>
+      <tr><td>Powód wejścia</td><td>Konkretna formacja/sygnał zgodny z planem tradingowym</td></tr>
+      <tr><td>Stop-loss i cel</td><td>Poziomy ustalone przed wejściem, wraz z R:R</td></tr>
+      <tr><td>Wynik</td><td>Zysk/strata, w % kapitału i w R (wielokrotność ryzyka)</td></tr>
+      <tr><td>Zgodność z planem</td><td>Czy trzymano się reguł, czy złamano je pod wpływem emocji</td></tr>
+      <tr><td>Wnioski</td><td>Co zrobić inaczej następnym razem</td></tr>
+    </table>
+    <div class="panel">Regularny przegląd dziennika (np. co 20–30 transakcji) pozwala policzyć realny win rate i expectancy strategii — dokładnie te metryki, które poznałeś w rozdziale o backtestingu.</div>
+  </section>
+
+  <section id="praktyka-wsparcia">
+    <span class="eyebrow">Rozdział 29</span>
+    <h2>Praktyka: jak rysować wsparcia i opory krok po kroku</h2>
+    <p>To najczęściej pomijana umiejętność — samo wiedzenie "czym jest wsparcie" nie wystarczy. Poniżej konkretna procedura, którą możesz zastosować na dowolnym wykresie.</p>
+
+    <h3>Krok 1 — Zacznij od najwyższego interwału, jaki Cię interesuje</h3>
+    <p>Jeśli handlujesz na H1, zacznij od zaznaczenia poziomów na D1 lub H4 — to one najczęściej decydują o tym, gdzie cena naprawdę się zatrzyma. Poziomy z wyższego interwału zawsze mają pierwszeństwo nad tymi z niższego.</p>
+
+    <h3>Krok 2 — Szukaj miejsc, gdzie cena reagowała wielokrotnie</h3>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Krok po kroku: identyfikacja poziomu wsparcia z wielokrotnym dotknięciem">
+        <line x1="0" y1="160" x2="560" y2="160" stroke="#4fd68c" stroke-width="1.6" stroke-dasharray="4 3"/>
+        <polyline points="10,60 60,140 90,155 130,90 170,145 200,158 240,80 280,150 310,157 350,70 390,50" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <circle cx="90" cy="155" r="5" fill="#e0b15c"/><circle cx="200" cy="158" r="5" fill="#e0b15c"/><circle cx="310" cy="157" r="5" fill="#e0b15c"/>
+        <text x="15" y="180" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="11">3 dotknięcia = wiarygodny poziom</text>
+      </svg>
+      <figcaption>Nie szukaj idealnego dołka — szukaj <strong>strefy</strong>, w której cena kilkukrotnie się zatrzymała lub odbiła (żółte punkty). Im więcej dotknięć, tym poziom istotniejszy.</figcaption>
+    </figure>
+
+    <h3>Krok 3 — Rysuj strefę, nie jedną linię</h3>
+    <figure>
+      <svg viewBox="0 0 560 160" role="img" aria-label="Strefa wsparcia zamiast pojedynczej linii">
+        <rect x="0" y="110" width="560" height="30" fill="#4fd68c" opacity="0.15"/>
+        <line x1="0" y1="110" x2="560" y2="110" stroke="#4fd68c" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="0" y1="140" x2="560" y2="140" stroke="#4fd68c" stroke-width="1" stroke-dasharray="3 3"/>
+        <polyline points="10,60 60,120 100,135 140,90 180,115 220,130 260,70 300,50" fill="none" stroke="#e9efe9" stroke-width="2"/>
+      </svg>
+      <figcaption>Zamiast jednej precyzyjnej linii, zaznacz strefę obejmującą wszystkie "prawie trafione" dołki/szczyty — w realnym handlu cena rzadko dotyka dokładnie tego samego pixela dwa razy.</figcaption>
+    </figure>
+
+    <h3>Krok 4 — Sprawdź, czy poziom był kiedyś oporem i stał się wsparciem (lub odwrotnie)</h3>
+    <p>Takie "podwójne" poziomy (rozdział 4) są zwykle silniejsze niż poziomy testowane tylko z jednej strony.</p>
+
+    <h3>Krok 5 — Potwierdź wolumenem</h3>
+    <p>Jeśli przy danym poziomie regularnie rośnie wolumen (widać większe słupki na dołączonym wskaźniku wolumenu), to dodatkowy dowód, że rynek naprawdę "zauważa" ten poziom.</p>
+
+    <div class="panel warn">
+      <span class="label">Najczęstsze błędy początkujących</span>
+      <ul style="margin-top:6px;">
+        <li>Rysowanie linii przez pojedynczy, przypadkowy knot świecy zamiast przez strefę wielu reakcji</li>
+        <li>Ignorowanie poziomów z wyższego interwału na rzecz tych widocznych tylko na aktualnym wykresie</li>
+        <li>Rysowanie zbyt wielu linii naraz — jeśli masz 15 poziomów na wykresie, żaden z nich nie jest naprawdę istotny</li>
+        <li>Przesuwanie linii "wstecz", żeby pasowała do już otwartej pozycji (racjonalizacja, nie analiza)</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="atr">
+    <span class="eyebrow">Rozdział 30</span>
+    <h2>ATR (Average True Range) i wyznaczanie Stop-Loss</h2>
+    <p>ATR mierzy przeciętną zmienność instrumentu w ostatnich N okresach — czyli ile "zwykle" porusza się cena w jednym okresie. To kluczowe narzędzie do wyznaczania stop-lossa w sposób dopasowany do bieżącej zmienności, zamiast "na oko".</p>
+    <figure>
+      <svg viewBox="0 0 560 150" role="img" aria-label="Wskaźnik ATR pokazujący zmienność">
+        <polyline points="10,120 40,115 70,118 100,90 130,70 160,60 190,80 220,95 250,60 280,40 310,55 340,70 370,50 400,35" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        <text x="230" y="30" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">rosnąca zmienność</text>
+      </svg>
+      <figcaption>Rosnący ATR = rynek porusza się gwałtowniej niż zwykle → stop-loss powinien być szerszy, żeby nie zostać "wybitym" przez zwykły szum. Malejący ATR = można pozwolić sobie na ciaśniejszy stop.</figcaption>
+    </figure>
+    <div class="panel"><span class="label">Praktyczna metoda</span>Popularna reguła: stop-loss = wejście minus (1,5–2 × ATR). Dzięki temu odległość stopu automatycznie dostosowuje się do aktualnej "temperatury" rynku, zamiast być sztywną, arbitralną liczbą procent czy pipsów.</div>
+  </section>
+
+  <section id="praktyka-sltp">
+    <span class="eyebrow">Rozdział 31</span>
+    <h2>Praktyka: wyznaczanie Stop-Loss i Take-Profit krok po kroku</h2>
+    <p>Poniżej cztery konkretne metody wyznaczania SL — od najprostszej po najbardziej precyzyjną — oraz sposób wyliczenia TP na ich podstawie.</p>
+
+    <h3>Metoda 1 — Za ostatnim swing point</h3>
+    <figure>
+      <svg viewBox="0 0 500 200" role="img" aria-label="Stop-loss za ostatnim dołkiem swingowym">
+        <polyline points="10,150 60,100 100,130 140,60 180,90 220,40" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <circle cx="100" cy="130" r="4" fill="#e0b15c"/>
+        <line x1="0" y1="145" x2="500" y2="145" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="230" y="40" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">wejście</text>
+        <circle cx="220" cy="40" r="4" fill="#4fd68c"/>
+        <text x="10" y="140" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">SL — poniżej ostatniego dołka</text>
+      </svg>
+      <figcaption>Wchodząc long przy wybiciu, stop-loss ustawiasz kilka ticków poniżej ostatniego znaczącego dołka (żółty punkt) — logika: jeśli cena tam wróci, scenariusz wzrostowy przestaje być prawdziwy.</figcaption>
+    </figure>
+
+    <h3>Metoda 2 — Za strefą wsparcia/oporu</h3>
+    <p>Analogicznie do metody 1, ale zamiast pojedynczego swingu wykorzystujesz całą strefę z rozdziału 29 — stop stawiasz tuż za jej granicą, nie w jej środku (inaczej normalny "szum" cenowy będzie Cię regularnie wybijał z pozycji).</p>
+
+    <h3>Metoda 3 — Oparta na ATR (opisana w rozdziale 30)</h3>
+    <p>Dobra, gdy wykres nie daje wyraźnego swingu lub strefy do oparcia stopu — np. na bardzo świeżym wybiciu z konsolidacji.</p>
+
+    <h3>Metoda 4 — Stały % kapitału / stała kwota</h3>
+    <p>Najprostsza, ale najmniej "techniczna" — stop ustawiany niezależnie od struktury wykresu, wyłącznie na podstawie tego, ile jesteś gotów stracić. Dobra dla początkujących, zanim nabiorą wprawy w czytaniu struktury rynku.</p>
+
+    <h3>Wyznaczanie Take-Profit</h3>
+    <figure>
+      <svg viewBox="0 0 500 220" role="img" aria-label="Wyznaczanie celu TP na podstawie R:R i najbliższego oporu">
+        <polyline points="10,180 60,140 100,160 140,100 180,40" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <line x1="0" y1="175" x2="500" y2="175" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <line x1="0" y1="40" x2="500" y2="40" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <circle cx="180" cy="40" r="4" fill="#4fd68c"/>
+        <text x="10" y="170" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">SL</text>
+        <text x="190" y="30" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">najbliższy istotny opór = naturalny TP</text>
+        <line x1="185" y1="130" x2="185" y2="175" stroke="#e0685c" stroke-width="1" marker-end="url(#a1)"/>
+        <text x="195" y="155" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">ryzyko (1R)</text>
+        <line x1="205" y1="130" x2="205" y2="40" stroke="#4fd68c" stroke-width="1"/>
+        <text x="215" y="90" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">zysk (3R)</text>
+      </svg>
+      <figcaption>Dobry TP to zwykle najbliższy istotny poziom oporu (jeśli grasz long) — nie dowolna, "okrągła" liczba. Odległość do SL (ryzyko) porównaj z odległością do TP (zysk), żeby poznać realny stosunek R:R z rozdziału 14.</figcaption>
+    </figure>
+
+    <div class="panel"><span class="label">Reguła decyzyjna</span>Jeśli najbliższy sensowny opór daje R:R poniżej 1:1,5 — transakcja zwykle nie jest tego warta, niezależnie jak "pewny" wygląda sygnał wejścia. Lepiej poczekać na układ, gdzie rynek sam oferuje więcej przestrzeni do zysku niż do ryzyka.</div>
+
+    <h3>Trailing stop — przesuwanie stopu wraz z zyskiem</h3>
+    <p>Gdy cena porusza się zgodnie z pozycją, stop-loss można stopniowo przesuwać w kierunku zysku (np. za każdy nowy swing point albo o stałą wielokrotność ATR) — pozwala to zabezpieczyć część zysku, nie zamykając pozycji przedwcześnie.</p>
+  </section>
+
+  <section id="praktyka-wskazniki">
+    <span class="eyebrow">Rozdział 32</span>
+    <h2>Praktyka: jak czytać wskaźniki krok po kroku</h2>
+
+    <h3>Czytanie RSI — trzy pytania do zadania sobie za każdym razem</h3>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Praktyczne czytanie RSI z dywergencją">
+        <rect x="0" y="140" width="560" height="60" fill="#16211d"/>
+        <rect x="0" y="140" width="560" height="15" fill="#e0685c" opacity="0.12"/>
+        <rect x="0" y="185" width="560" height="15" fill="#4fd68c" opacity="0.12"/>
+        <line x1="0" y1="155" x2="560" y2="155" stroke="#e0685c" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="0" y1="185" x2="560" y2="185" stroke="#4fd68c" stroke-width="1" stroke-dasharray="3 3"/>
+        <polyline points="10,60 80,40 150,55 220,25 290,50 360,20 430,45" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <text x="60" y="30" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">cena: coraz wyższe szczyty</text>
+        <polyline points="10,175 80,165 150,178 220,158 290,175 360,168 430,180" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        <text x="330" y="200" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">RSI: coraz niższe szczyty = dywergencja</text>
+      </svg>
+      <figcaption>Klasyczny przykład dywergencji niedźwiedziej: cena robi coraz wyższe szczyty (góra), a RSI robi coraz niższe szczyty (dół) — ostrzeżenie, że momentum słabnie mimo pozornej siły ceny.</figcaption>
+    </figure>
+    <ol class="reg" style="list-style:decimal;">
+      <li><strong>Gdzie jest wartość RSI?</strong> Powyżej 70 (możliwe wykupienie), poniżej 30 (możliwe wyprzedanie), czy w środku (brak skrajności)?</li>
+      <li><strong>Czy RSI potwierdza ruch ceny?</strong> Gdy cena robi nowy szczyt, czy RSI też robi nowy, wyższy szczyt? Jeśli nie — masz dywergencję.</li>
+      <li><strong>W jakim jest trendzie samo RSI?</strong> W silnym trendzie wzrostowym RSI często oscyluje między 40 a 80, zamiast klasycznych 30–70 — "wykupienie" w takim kontekście bywa mylące.</li>
+    </ol>
+
+    <h3>Czytanie MACD — na co patrzeć w kolejności</h3>
+    <figure>
+      <svg viewBox="0 0 560 170" role="img" aria-label="Praktyczne czytanie MACD krok po kroku">
+        <line x1="0" y1="90" x2="560" y2="90" stroke="#3a4a42" stroke-width="1"/>
+        <g fill="#4fd68c" opacity="0.7"><rect x="20" y="70" width="10" height="20"/><rect x="45" y="55" width="10" height="35"/><rect x="70" y="40" width="10" height="50"/><rect x="95" y="50" width="10" height="40"/></g>
+        <g fill="#e0685c" opacity="0.7"><rect x="120" y="90" width="10" height="10"/><rect x="145" y="90" width="10" height="25"/></g>
+        <polyline points="20,60 70,25 120,80 170,50" fill="none" stroke="#e9efe9" stroke-width="1.8"/>
+        <polyline points="20,68 70,40 120,70 170,58" fill="none" stroke="#e0b15c" stroke-width="1.8"/>
+        <circle cx="120" cy="75" r="5" fill="#e0685c" stroke="#0c1210" stroke-width="1"/>
+        <text x="130" y="65" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">przecięcie w dół = sygnał sprzedaży</text>
+      </svg>
+      <figcaption>Kolejność odczytu: (1) czy histogram maleje — momentum słabnie? (2) czy linia MACD przecina linię sygnałową? (3) czy przecięcie następuje powyżej, czy poniżej poziomu zerowego (mocniejszy sygnał, gdy zgodne z głównym trendem)?</figcaption>
+    </figure>
+
+    <h3>Łączenie wskaźników — jak nie wpaść w paraliż decyzyjny</h3>
+    <p>Nie potrzebujesz pięciu wskaźników mówiących to samo. Sprawdzony, prosty zestaw to: <strong>jeden wskaźnik trendu</strong> (np. średnia krocząca lub ADX), <strong>jeden oscylator momentum</strong> (RSI lub MACD) i <strong>wolumen</strong> jako potwierdzenie. Sygnał traktuj jako mocny dopiero, gdy minimum dwa z trzech elementów się zgadzają.</p>
+  </section>
+
+  <section id="studium">
+    <span class="eyebrow">Rozdział 33</span>
+    <h2>Studium przypadku: pełna analiza wykresu od A do Z</h2>
+    <p>Poniżej przykładowy, kompletny tok rozumowania — dokładnie taki, jaki warto przejść za każdym razem przed otwarciem pozycji.</p>
+    <figure>
+      <svg viewBox="0 0 600 260" role="img" aria-label="Kompletne studium przypadku łączące trend, wsparcie, formację i SL/TP">
+        <rect x="0" y="30" width="600" height="18" fill="#4fd68c" opacity="0.15"/>
+        <line x1="0" y1="48" x2="600" y2="48" stroke="#4fd68c" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <polyline points="10,200 60,150 100,180 140,120 180,160 220,90 260,50 300,45 340,90 380,55 420,30 460,60" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <line x1="10" y1="205" x2="480" y2="55" stroke="#e0b15c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <circle cx="300" cy="45" r="4" fill="#e0b15c"/>
+        <line x1="0" y1="90" x2="600" y2="90" stroke="#4a5a52" stroke-width="1" stroke-dasharray="2 4"/>
+        <text x="500" y="85" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">SMA 50</text>
+        <circle cx="380" cy="55" r="5" fill="#4fd68c" stroke="#0c1210" stroke-width="1.5"/>
+        <text x="392" y="52" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">wejście</text>
+        <line x1="0" y1="70" x2="600" y2="70" stroke="#4fd68c" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="500" y="65" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">TP (opór)</text>
+        <line x1="0" y1="95" x2="600" y2="95" stroke="#e0685c" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="500" y="110" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">SL</text>
+      </svg>
+      <figcaption>Kompletny obraz: cena w kanale wzrostowym (żółta linia trendu), powyżej SMA 50 (kontekst z rozdz. 9), formacja odbicia od strefy wsparcia (rozdz. 29), wejście z SL tuż pod poziomem wejścia i TP przy najbliższym oporze.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Krok</th><th>Co sprawdzamy</th><th>W tym przykładzie</th></tr>
+      <tr><td>1. Trend wyższego interwału</td><td>Rozdz. 3, 13</td><td>Wzrostowy, kanał aktywny od kilku tygodni</td></tr>
+      <tr><td>2. Kontekst średniej</td><td>Rozdz. 9</td><td>Cena powyżej SMA 50 — potwierdzenie trendu</td></tr>
+      <tr><td>3. Wsparcie/opór</td><td>Rozdz. 4, 29</td><td>Odbicie od strefy wsparcia zgodnej z linią kanału</td></tr>
+      <tr><td>4. Sygnał wejścia</td><td>Rozdz. 5, 6, 7</td><td>Formacja świecowa potwierdzająca odbicie (np. młot)</td></tr>
+      <tr><td>5. Oscylator</td><td>Rozdz. 11, 32</td><td>RSI wychodzi z poziomu 40–50, bez dywergencji</td></tr>
+      <tr><td>6. Wolumen</td><td>Rozdz. 12</td><td>Wzrost wolumenu na świecy sygnalnej</td></tr>
+      <tr><td>7. SL</td><td>Rozdz. 30, 31</td><td>Tuż pod strefą wsparcia / 1,5×ATR</td></tr>
+      <tr><td>8. TP i R:R</td><td>Rozdz. 14, 31</td><td>Najbliższy opór, R:R ok. 1:2,5 — transakcja "warta świeczki"</td></tr>
+      <tr><td>9. Wielkość pozycji</td><td>Rozdz. 14, 27</td><td>1–2% kapitału na ryzyko, zgodnie z planem</td></tr>
+    </table>
+    <div class="panel">Jeśli którykolwiek z powyższych punktów wyraźnie zaprzecza pozostałym (np. formacja wzrostowa, ale trend wyższego interwału spadkowy) — to sygnał, żeby poczekać na czystszy układ, zamiast "docisnąć" niepewną transakcję.</div>
+  </section>
+
+  <section id="heikin">
+    <span class="eyebrow">Rozdział 34</span>
+    <h2>Wykresy Heikin-Ashi</h2>
+    <p>Heikin-Ashi ("uśredniony słup" po japońsku) to zmodyfikowana wersja świec, w której każda świeca jest wyliczana na podstawie uśrednionych wartości poprzedniej — dzięki temu wykres jest znacznie "gładszy" i łatwiej pokazuje czyste trendy, kosztem precyzyjnych, realnych cen otwarcia/zamknięcia.</p>
+    <figure>
+      <svg viewBox="0 0 500 160" role="img" aria-label="Porównanie świec klasycznych i Heikin-Ashi">
+        <g stroke-width="1.3">
+          <line x1="30" y1="130" x2="30" y2="95" stroke="#e0685c"/><rect x="24" y="105" width="12" height="18" fill="#e0685c"/>
+          <line x1="55" y1="120" x2="55" y2="100" stroke="#4fd68c"/><rect x="49" y="105" width="12" height="10" fill="#4fd68c"/>
+          <line x1="80" y1="115" x2="80" y2="75" stroke="#e0685c"/><rect x="74" y="88" width="12" height="20" fill="#e0685c"/>
+          <line x1="105" y1="100" x2="105" y2="60" stroke="#4fd68c"/><rect x="99" y="70" width="12" height="22" fill="#4fd68c"/>
+        </g>
+        <text x="20" y="150" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">świece klasyczne — zmienne, "poszarpane"</text>
+        <g stroke-width="1.3" transform="translate(220,0)">
+          <line x1="30" y1="130" x2="30" y2="95" stroke="#e0685c"/><rect x="24" y="105" width="12" height="15" fill="#e0685c"/>
+          <line x1="55" y1="118" x2="55" y2="90" stroke="#4fd68c"/><rect x="49" y="100" width="12" height="12" fill="#4fd68c"/>
+          <line x1="80" y1="100" x2="80" y2="70" stroke="#4fd68c"/><rect x="74" y="80" width="12" height="14" fill="#4fd68c"/>
+          <line x1="105" y1="82" x2="105" y2="55" stroke="#4fd68c"/><rect x="99" y="62" width="12" height="14" fill="#4fd68c"/>
+        </g>
+        <text x="240" y="150" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">Heikin-Ashi — gładszy, wyraźny trend</text>
+      </svg>
+      <figcaption>Seria kolejnych zielonych świec Heikin-Ashi bez dolnych cieni to sygnał silnego, nieprzerwanego trendu wzrostowego; pojawienie się małych korpusów z cieniami po obu stronach często zapowiada osłabienie ruchu.</figcaption>
+    </figure>
+    <div class="panel warn"><span class="label">Uwaga</span>Ponieważ Heikin-Ashi wygładza dane, wartości otwarcia/zamknięcia na tych świecach nie odpowiadają realnym cenom transakcji — nie należy ustawiać na ich podstawie precyzyjnych zleceń, tylko czytać ogólny kształt trendu.</div>
+  </section>
+
+  <section id="renko">
+    <span class="eyebrow">Rozdział 35</span>
+    <h2>Wykresy Renko</h2>
+    <p>Podobnie jak Point & Figure (rozdział 16), wykresy Renko całkowicie ignorują czas — rysują nową "cegiełkę" wyłącznie wtedy, gdy cena przesunie się o ustaloną wartość, niezależnie od tego, ile to trwało.</p>
+    <figure>
+      <svg viewBox="0 0 400 160" role="img" aria-label="Wykres Renko z cegiełkami wzrostowymi i spadkowymi">
+        <g stroke="#0c1210" stroke-width="1">
+          <rect x="20" y="120" width="30" height="30" fill="#4fd68c"/>
+          <rect x="50" y="90" width="30" height="30" fill="#4fd68c"/>
+          <rect x="80" y="60" width="30" height="30" fill="#4fd68c"/>
+          <rect x="110" y="90" width="30" height="30" fill="#e0685c"/>
+          <rect x="140" y="30" width="30" height="30" fill="#4fd68c"/>
+          <rect x="170" y="0" width="30" height="30" fill="#4fd68c"/>
+        </g>
+      </svg>
+      <figcaption>Każda cegiełka ma tę samą wysokość — wykres pokazuje wyłącznie kierunek i skalę ruchu, bez "szumu" wynikającego z czasu. Ułatwia to czytanie czystej struktury trendu, linii trendu i poziomów wsparcia/oporu.</figcaption>
+    </figure>
+    <p>Wadą Renko jest utrata informacji o dokładnym czasie i wolumenie poszczególnych ruchów — dlatego wielu traderów traktuje go jako narzędzie pomocnicze do wizualnego potwierdzenia trendu, a nie jako główny wykres do analizy.</p>
+  </section>
+
+  <section id="volprofile">
+    <span class="eyebrow">Rozdział 36</span>
+    <h2>Profil Wolumenu (Volume Profile)</h2>
+    <p>W odróżnieniu od zwykłego wolumenu (słupki w czasie, rozdział 12), profil wolumenu pokazuje, <strong>na jakich poziomach cenowych</strong> odbyło się najwięcej transakcji — niezależnie od tego, kiedy to się stało. Wynikiem jest pozioma "histogramowa" struktura obok wykresu cenowego.</p>
+    <figure>
+      <svg viewBox="0 0 500 220" role="img" aria-label="Profil wolumenu z POC i strefą wartości">
+        <polyline points="380,190 400,150 390,120 410,90 395,60 415,30 400,10" fill="none" stroke="#e9efe9" stroke-width="2"/>
+        <g fill="#4fd68c" opacity="0.7">
+          <rect x="330" y="20" width="30" height="10"/>
+          <rect x="300" y="35" width="60" height="10"/>
+          <rect x="270" y="50" width="90" height="10"/>
+          <rect x="230" y="65" width="130" height="10"/>
+          <rect x="190" y="80" width="170" height="10"/>
+          <rect x="150" y="95" width="210" height="10"/>
+          <rect x="180" y="110" width="180" height="10"/>
+          <rect x="240" y="125" width="120" height="10"/>
+          <rect x="290" y="140" width="70" height="10"/>
+          <rect x="320" y="155" width="40" height="10"/>
+        </g>
+        <rect x="150" y="90" width="210" height="15" fill="#e0b15c" opacity="0.35"/>
+        <text x="15" y="100" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">POC — punkt kontroli</text>
+        <line x1="145" y1="98" x2="20" y2="98" stroke="#e0b15c" stroke-width="1"/>
+      </svg>
+      <figcaption><strong>POC (Point of Control)</strong> — poziom cenowy z największym wolumenem, działający jak "magnes" dla ceny. Szeroka część profilu to <strong>strefa wartości (Value Area)</strong>, w której odbyło się ok. 70% obrotu — jej granice często pełnią rolę dynamicznego wsparcia/oporu.</figcaption>
+    </figure>
+    <div class="panel"><span class="label">Zastosowanie praktyczne</span>Cena wychodząca poza strefę wartości z małym wolumenem (widoczna jako "cienka szyjka" na profilu) często szybko do niej wraca — obszary o niskim wolumenie na profilu bywają pokonywane przez cenę bardzo szybko, bo brakuje tam "pamięci" rynku.</div>
+  </section>
+
+  <section id="harmoniczne">
+    <span class="eyebrow">Rozdział 37</span>
+    <h2>Formacje harmoniczne</h2>
+    <p>Formacje harmoniczne łączą klasyczne kształty formacji cenowych z precyzyjnymi proporcjami Fibonacciego między kolejnymi punktami (X-A-B-C-D), co ma zwiększać trafność wyznaczanych na ich podstawie punktów zwrotnych.</p>
+    <figure>
+      <svg viewBox="0 0 400 200" role="img" aria-label="Formacja harmoniczna Gartley">
+        <polyline points="20,160 110,40 170,110 240,60 320,150" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <text x="10" y="180" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="12">X</text>
+        <text x="105" y="30" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="12">A</text>
+        <text x="168" y="130" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="12">B</text>
+        <text x="238" y="50" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="12">C</text>
+        <text x="325" y="165" fill="#4fd68c" font-family="IBM Plex Mono" font-size="12">D (strefa odwrócenia)</text>
+        <circle cx="320" cy="150" r="5" fill="#4fd68c"/>
+      </svg>
+      <figcaption><strong>Gartley</strong> — jedna z najpopularniejszych formacji harmonicznych. Punkt D, w którym oczekuje się odwrócenia ceny, wypada w konkretnej proporcji Fibonacciego względem odcinka X-A (zwykle 78,6%).</figcaption>
+    </figure>
+    <table>
+      <tr><th>Formacja</th><th>Charakterystyczna proporcja w punkcie D</th></tr>
+      <tr><td>Gartley</td><td>78,6% zniesienia odcinka XA</td></tr>
+      <tr><td>Butterfly</td><td>127% – 161,8% rozszerzenia odcinka XA (poza punkt X)</td></tr>
+      <tr><td>Bat</td><td>88,6% zniesienia odcinka XA</td></tr>
+      <tr><td>Crab</td><td>161,8% rozszerzenia odcinka XA — najbardziej ekstremalna z formacji</td></tr>
+    </table>
+    <div class="panel warn"><span class="label">Uwaga</span>Formacje harmoniczne wymagają dużej precyzji przy mierzeniu proporcji i są uważane za jedno z trudniejszych narzędzi AT — zwykle wykorzystywane dopiero po opanowaniu podstaw z wcześniejszych rozdziałów.</div>
+  </section>
+
+  <section id="orderbook">
+    <span class="eyebrow">Rozdział 38</span>
+    <h2>Order Book i Order Flow — podstawy</h2>
+    <p>Księga zleceń (order book) pokazuje wszystkie aktualnie oczekujące zlecenia kupna (bidy) i sprzedaży (aski) na danym instrumencie — to surowa, niefiltrowana podaż i popyt w czasie rzeczywistym.</p>
+    <figure>
+      <svg viewBox="0 0 400 200" role="img" aria-label="Głębokość rynku - wykres order book">
+        <line x1="200" y1="10" x2="200" y2="190" stroke="#3a4a42" stroke-width="1"/>
+        <path d="M 200 100 L 190 95 L 175 85 L 155 70 L 130 55 L 100 45 L 60 40 L 20 38" fill="none" stroke="#4fd68c" stroke-width="2.2"/>
+        <path d="M 200 100 L 210 105 L 225 115 L 245 130 L 270 145 L 300 155 L 340 160 L 380 162" fill="none" stroke="#e0685c" stroke-width="2.2"/>
+        <text x="40" y="30" fill="#4fd68c" font-family="IBM Plex Mono" font-size="11">bidy (kupno)</text>
+        <text x="290" y="180" fill="#e0685c" font-family="IBM Plex Mono" font-size="11">aski (sprzedaż)</text>
+      </svg>
+      <figcaption>Wykres głębokości rynku pokazuje skumulowany wolumen zleceń oczekujących po obu stronach ceny. Duża "ściana" zleceń po jednej stronie bywa traktowana jako potencjalne wsparcie/opór — choć takie zlecenia mogą też zostać wycofane w każdej chwili.</figcaption>
+    </figure>
+    <h3>Order Flow — kto naprawdę inicjuje ruch</h3>
+    <p>Order flow idzie o krok dalej niż sam order book — analizuje, które transakcje były inicjowane agresywnym kupnem (uderzenie w ask), a które agresywną sprzedażą (uderzenie w bid), dając obraz rzeczywistej presji rynkowej w danym momencie, a nie tylko statycznych zleceń oczekujących.</p>
+    <div class="panel"><span class="label">Do czego to się przydaje</span>Narzędzia order flow są szczególnie popularne w handlu krótkoterminowym (scalping, day trading) na płynnych rynkach kryptowalut — pozwalają wychwycić, czy wybicie poziomu jest napędzane realną presją kupujących, czy tylko chwilowym brakiem płynności.</div>
+  </section>
+
+  <section id="funding">
+    <span class="eyebrow">Rozdział 39</span>
+    <h2>Funding Rate i Open Interest — wskaźniki rynku kontraktów terminowych</h2>
+    <p>Handel kryptowalutami odbywa się w dużej mierze na kontraktach wieczystych (perpetual futures) — dwa wskaźniki specyficzne dla tego rynku dają unikalny wgląd w pozycjonowanie tłumu.</p>
+    <h3>Funding Rate</h3>
+    <figure>
+      <svg viewBox="0 0 500 150" role="img" aria-label="Funding rate dodatni i ujemny">
+        <line x1="0" y1="75" x2="500" y2="75" stroke="#3a4a42" stroke-width="1"/>
+        <g fill="#4fd68c"><rect x="20" y="60" width="14" height="15"/><rect x="45" y="45" width="14" height="30"/><rect x="70" y="30" width="14" height="45"/></g>
+        <g fill="#e0685c"><rect x="120" y="75" width="14" height="15"/><rect x="145" y="75" width="14" height="10"/></g>
+        <g fill="#4fd68c"><rect x="190" y="65" width="14" height="10"/><rect x="215" y="55" width="14" height="20"/><rect x="240" y="20" width="14" height="55"/></g>
+        <text x="60" y="20" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">wysoki dodatni funding = przegrzanie longów</text>
+      </svg>
+      <figcaption>Dodatni funding rate oznacza, że posiadacze pozycji long płacą posiadaczom short — sygnalizuje przewagę byków, a jego ekstremalnie wysokie wartości bywają odczytywane jako ostrzeżenie przed przegrzaniem rynku i możliwą korektą.</figcaption>
+    </figure>
+    <h3>Open Interest (otwarte pozycje)</h3>
+    <p>Suma wszystkich aktualnie otwartych kontraktów na rynku. Rosnący Open Interest przy rosnącej cenie potwierdza, że w trend wchodzi "świeży" kapitał (analogia do zasady wolumenu z rozdziału 12/1). Gwałtowny spadek Open Interest po silnym ruchu często oznacza masowe zamykanie pozycji (likwidacje) — co samo w sobie potrafi napędzać dalszą zmienność.</p>
+    <div class="panel warn"><span class="label">Uwaga</span>Bardzo wysoki Open Interest w połączeniu z ekstremalnym funding rate to klasyczny "paliwowy" scenariusz kaskadowych likwidacji — warto go traktować jako sygnał podwyższonego ryzyka gwałtownych ruchów w obie strony, a nie jako prosty sygnał kupna/sprzedaży.</div>
+  </section>
+
+  <section id="onchain">
+    <span class="eyebrow">Rozdział 40</span>
+    <h2>Podstawy analizy on-chain</h2>
+    <p>Analiza on-chain to unikalna dla kryptowalut gałąź analizy, bazująca na publicznie dostępnych danych bezpośrednio z blockchaina — coś, czego nie mają tradycyjne rynki akcji czy forex.</p>
+    <table>
+      <tr><th>Metryka</th><th>Co pokazuje</th></tr>
+      <tr><td>Przepływy giełdowe (Exchange Netflow)</td><td>Czy więcej monet trafia na giełdy (potencjalna presja podażowa) czy z nich schodzi (akumulacja, trzymanie długoterminowe)</td></tr>
+      <tr><td>NVT Ratio (Network Value to Transactions)</td><td>Porównuje kapitalizację sieci do wartości transakcji na blockchainie — wysoki NVT może sugerować przewartościowanie względem realnego użycia</td></tr>
+      <tr><td>MVRV Ratio</td><td>Porównuje bieżącą wycenę rynkową do średniej ceny, po jakiej monety faktycznie zmieniały właściciela — pomaga ocenić, czy rynek jako całość jest średnio na zysku, czy na stracie</td></tr>
+      <tr><td>Aktywne adresy</td><td>Liczba unikalnych adresów aktywnych w sieci w danym okresie — proxy realnego zainteresowania siecią</td></tr>
+      <tr><td>Dominacja BTC</td><td>Udział kapitalizacji Bitcoina w całym rynku krypto (wspomniana już w rozdziale 17)</td></tr>
+    </table>
+    <div class="panel">Analiza on-chain najlepiej sprawdza się jako narzędzie <strong>strategiczne, długoterminowe</strong> (podobnie jak analiza fundamentalna) — nie jako narzędzie do precyzyjnego timingu pojedynczej transakcji, gdzie klasyczna analiza techniczna z poprzednich rozdziałów pozostaje głównym narzędziem.</div>
+  </section>
+
+  <section id="korelacja">
+    <span class="eyebrow">Rozdział 41</span>
+    <h2>Korelacja aktywów i ryzyko portfela</h2>
+    <p>Współczynnik korelacji (od -1 do +1) mierzy, jak bardzo dwa aktywa poruszają się razem. Ma to bezpośrednie przełożenie na realne ryzyko całego portfela, nie tylko pojedynczej pozycji.</p>
+    <figure>
+      <svg viewBox="0 0 500 160" role="img" aria-label="Wysoka korelacja dwóch aktywów">
+        <polyline points="10,120 60,90 110,100 160,60 210,75 260,30 310,45" fill="none" stroke="#4fd68c" stroke-width="2"/>
+        <polyline points="10,130 60,105 110,112 160,78 210,90 260,50 310,62" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        <text x="330" y="35" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">BTC</text>
+        <text x="330" y="65" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">altcoin</text>
+      </svg>
+      <figcaption>Dwa mocno skorelowane aktywa poruszają się niemal identycznie — otwarcie pozycji na obu naraz nie daje realnej dywersyfikacji, tylko podwaja ekspozycję na to samo ryzyko.</figcaption>
+    </figure>
+    <div class="panel"><span class="label">Praktyczna konsekwencja</span>Wiele altcoinów jest silnie skorelowanych z Bitcoinem — otwarcie pięciu pozycji long na różnych altcoinach w praktyce oznacza pięciokrotnie większą ekspozycję na ten sam, pojedynczy scenariusz rynkowy (ruch BTC), a nie pięć niezależnych zakładów.</div>
+  </section>
+
+  <section id="ruin">
+    <span class="eyebrow">Rozdział 42</span>
+    <h2>Risk of Ruin — ryzyko całkowitej utraty kapitału</h2>
+    <p>Risk of Ruin to prawdopodobieństwo, że przy danej strategii (win rate, R:R, wielkość pozycji) w końcu dojdzie do praktycznego "wyzerowania" konta, zanim strategia zdąży zadziałać zgodnie ze statystyczną przewagą.</p>
+    <table>
+      <tr><th>Ryzyko na transakcję</th><th>Orientacyjny wpływ na Risk of Ruin</th></tr>
+      <tr><td>1% kapitału</td><td>Bardzo niskie — potrzeba dziesiątek transakcji z rzędu pod wiatr, by zagrozić kontu</td></tr>
+      <tr><td>5% kapitału</td><td>Umiarkowane — seria kilkunastu stratnych transakcji staje się realnym zagrożeniem</td></tr>
+      <tr><td>10%+ kapitału</td><td>Wysokie — nawet przy dobrej strategii, kilka stratnych transakcji z rzędu może praktycznie zakończyć grę</td></tr>
+    </table>
+    <div class="panel warn"><span class="label">Dlaczego to najważniejsza liczba w całym kursie</span>Nawet strategia z dodatnią oczekiwaną wartością (rozdział 21) może doprowadzić do zrujnowania konta, jeśli pojedyncze ryzyko jest zbyt duże — seria kilku stratnych transakcji z rzędu jest matematycznie nieunikniona przy każdej strategii, niezależnie jak dobrej. To dlatego zasada 1–2% z rozdziału 14 wraca w kursie tak często.</div>
+  </section>
+
+  <section id="cwiczenia">
+    <span class="eyebrow">Rozdział 43</span>
+    <h2>Ćwiczenia i quiz sprawdzający wiedzę</h2>
+    <p>Poniższe pytania sprawdzają, czy potrafisz zastosować wiedzę z kursu, a nie tylko ją rozpoznać. Odpowiedzi znajdziesz, wracając do wskazanych rozdziałów.</p>
+    <ol class="reg" style="list-style:decimal;">
+      <li>Cena trzykrotnie odbija się od tego samego poziomu, a przy trzecim dotknięciu wolumen wyraźnie rośnie i cena przełamuje poziom. Co to sugeruje? <em>(rozdz. 4, 12, 29)</em></li>
+      <li>RSI robi coraz niższe szczyty, podczas gdy cena robi coraz wyższe szczyty. Jak nazywa się to zjawisko i co sugeruje? <em>(rozdz. 11, 32)</em></li>
+      <li>Masz układ z R:R 1:1,2 przy skuteczności historycznej strategii 45%. Czy statystycznie taka strategia jest opłacalna w długim terminie? <em>(rozdz. 21)</em></li>
+      <li>Funding rate jest ekstremalnie wysoki, a Open Interest gwałtownie rośnie razem z ceną. Jakie ryzyko to sygnalizuje? <em>(rozdz. 39)</em></li>
+      <li>Widzisz formację głowy i ramion na wykresie H1, ale trend na D1 jest silnie wzrostowy. Który sygnał powinien mieć pierwszeństwo i dlaczego? <em>(rozdz. 13, 33)</em></li>
+      <li>Ryzykujesz 8% kapitału na pojedynczą transakcję. Jakie jest główne zagrożenie takiego podejścia, nawet przy dobrej strategii? <em>(rozdz. 42)</em></li>
+    </ol>
+    <div class="panel">Najlepszy sposób sprawdzenia się: znajdź świeży, jeszcze niewidziany wykres (np. na koncie demo) i przejdź przez pełną, 9-punktową checklistę ze studium przypadku (rozdział 33) — na głos lub pisemnie w dzienniku transakcji (rozdział 28).</div>
+  </section>
+
+  <section id="smc">
+    <span class="eyebrow">Rozdział 44</span>
+    <h2>Smart Money Concepts — kluczowe pojęcia</h2>
+    <p>Smart Money Concepts (SMC) to zestaw pojęć spopularyzowany głównie w społeczności traderów kryptowalut i forex, opisujący rynek z perspektywy dużych graczy instytucjonalnych ("smart money"), którzy rzekomo celowo manipulują ceną, by zebrać płynność od traderów detalicznych, zanim wykonają właściwy ruch. To w dużej mierze rozwinięcie i przepakowanie starszej metody Wyckoffa (rozdział 22) pod nowoczesnym słownictwem.</p>
+
+    <div class="panel warn"><span class="label">Uczciwe zastrzeżenie na start</span>SMC jest niezwykle popularne w mediach społecznościowych, ale w odróżnieniu od np. RSI czy średnich kroczących, nie ma solidnych, niezależnych badań akademickich potwierdzających jego przewagę statystyczną. Traktuj poniższe pojęcia jako <strong>dodatkową siatkę pojęciową</strong> do czytania zachowania ceny — wartościową, bo uczy patrzeć na płynność i strukturę rynku — a nie jako gwarancję skuteczności. Więcej krytycznego spojrzenia w rozdziale 50.</div>
+
+    <h3>Płynność (Liquidity) i "polowanie na płynność"</h3>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Polowanie na płynność - liquidity sweep pod dołkiem">
+        <line x1="0" y1="150" x2="560" y2="150" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="10" y="145" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">stop-lossy graczy detalicznych (poniżej dołka)</text>
+        <polyline points="10,80 60,120 100,100 140,148 160,170 180,145 220,90 260,60 300,40" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <circle cx="160" cy="170" r="5" fill="#e0b15c"/>
+        <text x="170" y="185" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">sweep (zebranie płynności) → szybki powrót</text>
+      </svg>
+      <figcaption><strong>Liquidity Sweep</strong> — cena celowo (wg teorii SMC) przebija dołek, w którym skupiły się stop-lossy graczy grających na wzrost, zbiera tę płynność, po czym gwałtownie zawraca w górę. To rozwinięcie koncepcji "spring" z metody Wyckoffa (rozdział 22).</figcaption>
+    </figure>
+
+    <h3>Struktura rynku: BOS i CHoCH</h3>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Break of Structure i Change of Character">
+        <polyline points="10,150 60,100 100,120 140,60 180,90 220,110 260,70 300,50" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <line x1="100" y1="120" x2="220" y2="120" stroke="#4fd68c" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <text x="230" y="115" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">BOS ↑ (kontynuacja)</text>
+        <polyline points="300,50 340,90 380,60 420,130 460,150" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <line x1="340" y1="90" x2="420" y2="90" stroke="#e0685c" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <text x="425" y="95" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">CHoCH ↓ (zmiana charakteru)</text>
+      </svg>
+      <figcaption><strong>BOS (Break of Structure)</strong> — przełamanie poprzedniego szczytu/dołka w kierunku zgodnym z trendem, potwierdzające jego kontynuację. <strong>CHoCH (Change of Character)</strong> — pierwsze przełamanie struktury w kierunku <em>przeciwnym</em> do dotychczasowego trendu, traktowane jako pierwszy sygnał ostrzegawczy zmiany kierunku (podobne do pierwszego złamania linii trendu z rozdziału 3).</figcaption>
+    </figure>
+
+    <h3>Order Block (blok zleceń)</h3>
+    <figure>
+      <svg viewBox="0 0 500 180" role="img" aria-label="Order block jako strefa przed silnym ruchem">
+        <rect x="90" y="110" width="50" height="35" fill="#4fd68c" opacity="0.25"/>
+        <polyline points="10,130 40,120 70,135 105,128 140,125 170,90 210,50 250,60 290,30" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <text x="95" y="160" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">order block (ostatnia świeca spadkowa przed impulsem)</text>
+      </svg>
+      <figcaption>Order block to ostatnia świeca przeciwna do kierunku ruchu, tuż przed silnym, jednokierunkowym impulsem — w teorii SMC to strefa, w której duzi gracze mieli otwierać swoje pozycje. Cena wracająca do tej strefy po pewnym czasie bywa traktowana jako okazja do wejścia zgodnego z pierwotnym impulsem.</figcaption>
+    </figure>
+
+    <h3>Fair Value Gap (FVG) / Luka wartości godziwej</h3>
+    <figure>
+      <svg viewBox="0 0 400 160" role="img" aria-label="Fair Value Gap między trzema świecami">
+        <g stroke-width="1.4">
+          <line x1="60" y1="120" x2="60" y2="90" stroke="#4fd68c"/><rect x="52" y="95" width="16" height="20" fill="#4fd68c"/>
+          <line x1="110" y1="95" x2="110" y2="55" stroke="#4fd68c"/><rect x="102" y="62" width="16" height="25" fill="#4fd68c"/>
+          <line x1="160" y1="70" x2="160" y2="30" stroke="#4fd68c"/><rect x="152" y="38" width="16" height="22" fill="#4fd68c"/>
+        </g>
+        <rect x="80" y="87" width="50" height="8" fill="#e0b15c" opacity="0.4"/>
+        <text x="140" y="100" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">FVG — luka między 1. a 3. świecą</text>
+      </svg>
+      <figcaption>FVG powstaje, gdy środkowa świeca silnego impulsu tworzy lukę cenową niepokrytą ani przez świecę przed, ani po niej. Podobnie jak order block, teoria SMC zakłada, że cena ma tendencję do powracania i "wypełniania" takich luk, zanim kontynuuje ruch.</figcaption>
+    </figure>
+
+    <h3>Inducement i Mitigation</h3>
+    <p><strong>Inducement</strong> to niewielki, celowy (wg teorii) ruch ceny mający "zachęcić" traderów detalicznych do wejścia w złym kierunku tuż przed właściwym ruchem. <strong>Mitigation</strong> to moment, w którym cena wraca do wcześniej zidentyfikowanego order blocka lub FVG i "rozlicza" ten obszar, zanim ruch będzie kontynuowany.</p>
+  </section>
+
+  <section id="strat1">
+    <span class="eyebrow">Rozdział 45</span>
+    <h2>Strategia 1: Breakout + Retest</h2>
+    <p>Jedna z najprostszych i najlepiej udokumentowanych strategii — wykorzystuje klasyczne wsparcie/opór (rozdział 4) i zasadę zamiany ról po wybiciu.</p>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Strategia breakout i retest z wejściem po powrocie do poziomu">
+        <line x1="0" y1="100" x2="560" y2="100" stroke="#e0685c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <polyline points="10,150 60,120 100,145 140,105 180,140 220,95 260,60 300,90 340,55 380,40" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <circle cx="300" cy="90" r="5" fill="#4fd68c" stroke="#0c1210" stroke-width="1.5"/>
+        <text x="310" y="95" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">wejście na retest</text>
+        <line x1="0" y1="130" x2="560" y2="130" stroke="#e0685c" stroke-width="1" stroke-dasharray="2 3"/>
+        <text x="400" y="125" fill="#e0685c" font-family="IBM Plex Mono" font-size="10">SL poniżej strefy</text>
+      </svg>
+      <figcaption>Kolejność zdarzeń: (1) cena wybija istotny opór, (2) wraca, by "przetestować" go od góry, (3) zostaje odrzucona w kierunku zgodnym z wybiciem — to moment wejścia.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Element</th><th>Opis</th></tr>
+      <tr><td>Warunek wejścia</td><td>Wybicie istotnego, wielokrotnie testowanego poziomu (rozdz. 4, 29) + potwierdzenie zwiększonym wolumenem (rozdz. 12) + retest bez powrotu w głąb starego zakresu</td></tr>
+      <tr><td>Stop-loss</td><td>Tuż pod strefą przełamanego poziomu (metoda 2 z rozdz. 31) lub 1,5×ATR</td></tr>
+      <tr><td>Take-profit</td><td>Najbliższy kolejny istotny opór lub projekcja szerokości poprzedniej konsolidacji</td></tr>
+      <tr><td>Najlepszy kontekst rynkowy</td><td>Wysoki ADX po wybiciu (rozdz. 11) — sygnał, że rynek faktycznie wszedł w trend, nie konsoliduje się dalej</td></tr>
+    </table>
+    <div class="panel warn"><span class="label">Główne ryzyko</span>Fałszywe wybicia (rozdz. 12) — dlatego czekanie na retest, zamiast wchodzenia w momencie samego wybicia, znacząco filtruje słabsze sygnały, kosztem czasem gorszej ceny wejścia.</div>
+  </section>
+
+  <section id="strat2">
+    <span class="eyebrow">Rozdział 46</span>
+    <h2>Strategia 2: Pullback do EMA w trendzie</h2>
+    <p>Klasyczna strategia podążania za trendem — wykorzystuje średnią kroczącą (rozdział 9) jako dynamiczne wsparcie, na które trader czeka, zamiast gonić cenę na szczycie ruchu.</p>
+    <figure>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Strategia pullback do EMA21 w trendzie wzrostowym">
+        <polyline points="10,150 60,120 100,90 140,110 180,70 220,50 260,80 300,40 340,20" fill="none" stroke="#e0b15c" stroke-width="1.8"/>
+        <polyline points="10,160 60,140 100,120 140,105 180,85 220,68 260,72 300,55 340,42" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <circle cx="260" cy="80" r="5" fill="#4fd68c" stroke="#0c1210" stroke-width="1.5"/>
+        <text x="270" y="85" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">wejście na odbiciu od EMA</text>
+        <text x="30" y="130" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">EMA 21</text>
+      </svg>
+      <figcaption>Cena w wyraźnym trendzie wzrostowym regularnie cofa się do popularnej średniej (np. EMA 21 lub EMA 50), odbija się od niej i kontynuuje ruch. Wejście następuje właśnie przy takim odbiciu, potwierdzonym formacją świecową (rozdz. 5).</figcaption>
+    </figure>
+    <table>
+      <tr><th>Element</th><th>Opis</th></tr>
+      <tr><td>Warunek wejścia</td><td>Silny trend (ADX > 25) + cena dotyka EMA 21/50 + formacja świecowa odrzucenia (np. młot) na dotknięciu</td></tr>
+      <tr><td>Stop-loss</td><td>Tuż pod dołkiem świecy odrzucenia lub pod samą średnią</td></tr>
+      <tr><td>Take-profit</td><td>Poprzedni szczyt trendu lub rozszerzenie Fibonacciego 127%/161,8% (rozdz. 8)</td></tr>
+      <tr><td>Najlepszy kontekst rynkowy</td><td>Rynek wyraźnie trendujący na wyższym interwale (rozdz. 13) — ta strategia słabo radzi sobie w konsolidacji</td></tr>
+    </table>
+  </section>
+
+  <section id="strat3">
+    <span class="eyebrow">Rozdział 47</span>
+    <h2>Strategia 3: Liquidity Sweep + Order Block (SMC)</h2>
+    <p>Popularna w społeczności krypto strategia łącząca pojęcia z rozdziału 44 — celuje w moment, w którym rynek "zbiera" płynność, zanim wykona właściwy ruch.</p>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Strategia liquidity sweep i order block z wejsciem na powrocie">
+        <line x1="0" y1="160" x2="560" y2="160" stroke="#e0685c" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <polyline points="10,100 60,130 100,115 140,155 160,175 190,150 220,120 260,100" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <rect x="215" y="100" width="35" height="25" fill="#4fd68c" opacity="0.25"/>
+        <circle cx="160" cy="175" r="5" fill="#e0b15c"/>
+        <text x="170" y="190" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">1. sweep płynności pod dołkiem</text>
+        <polyline points="260,100 300,60 340,80 360,40" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <circle cx="340" cy="80" r="5" fill="#4fd68c" stroke="#0c1210" stroke-width="1.5"/>
+        <text x="350" y="85" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">3. wejście na powrocie do order blocka</text>
+        <text x="220" y="95" fill="#4fd68c" font-family="IBM Plex Mono" font-size="9">2. order block</text>
+      </svg>
+      <figcaption>Kolejność: (1) cena wybija dołek zbierając stop-lossy, (2) gwałtownie zawraca, tworząc wyraźny order block przy silnym impulsie w górę, (3) po chwilowym cofnięciu do tej strefy następuje wejście zgodne z nowym kierunkiem.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Element</th><th>Opis</th></tr>
+      <tr><td>Warunek wejścia</td><td>Wyraźny sweep płynności (fałszywe przebicie dołka/szczytu) + CHoCH potwierdzający zmianę struktury + powrót ceny do order blocka</td></tr>
+      <tr><td>Stop-loss</td><td>Tuż poza ekstremum sweepu (najniższy/najwyższy punkt "polowania")</td></tr>
+      <tr><td>Take-profit</td><td>Najbliższa górna płynność (poprzedni wyraźny szczyt, gdzie skupione są zlecenia przeciwnej strony)</td></tr>
+      <tr><td>Najlepszy kontekst rynkowy</td><td>Płynne rynki z dużym udziałem zleceń z dźwignią (kontrakty futures na krypto) — sweepy są tam wyjątkowo częste ze względu na masowe likwidacje (rozdz. 39)</td></tr>
+    </table>
+    <div class="panel warn"><span class="label">Uwaga</span>To najbardziej subiektywna z opisanych strategii — rozpoznanie "prawdziwego" sweepu i order blocka wymaga dużo praktyki, a dwóch traderów SMC często zaznaczy inne strefy na tym samym wykresie. Zdecydowanie wymaga wcześniejszego backtestingu (rozdz. 21) na koncie demo, zanim trafi na realny kapitał.</div>
+  </section>
+
+  <section id="strat4">
+    <span class="eyebrow">Rozdział 48</span>
+    <h2>Strategia 4: Dywergencja RSI na wsparciu/oporze</h2>
+    <p>Strategia łącząca dwa niezależne narzędzia z wcześniejszych rozdziałów (4 i 11) — siła sygnału bierze się właśnie z ich zbiegu (konfluencji), a nie z samej dywergencji.</p>
+    <figure>
+      <svg viewBox="0 0 560 240" role="img" aria-label="Dywergencja RSI dokładnie na poziomie wsparcia">
+        <line x1="0" y1="120" x2="560" y2="120" stroke="#4fd68c" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <polyline points="10,60 80,90 150,105 220,80 290,115 360,85" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <circle cx="150" cy="105" r="4" fill="#e0b15c"/><circle cx="290" cy="115" r="4" fill="#e0b15c"/>
+        <text x="20" y="140" fill="#a9b8ae" font-family="IBM Plex Mono" font-size="10">cena: drugi dołek niżej, ale blisko wsparcia</text>
+        <rect x="0" y="170" width="560" height="60" fill="#16211d"/>
+        <polyline points="150,220 220,200 290,180" fill="none" stroke="#e0b15c" stroke-width="2"/>
+        <text x="300" y="185" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">RSI: drugi dołek wyżej = dywergencja bycza</text>
+      </svg>
+      <figcaption>Cena testuje to samo wsparcie drugi raz i robi nieznacznie niższy dołek — ale RSI w tym samym miejscu robi <strong>wyższy</strong> dołek. To połączenie (poziom + dywergencja) jest znacznie mocniejszym sygnałem niż sama dywergencja w przypadkowym miejscu wykresu.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Element</th><th>Opis</th></tr>
+      <tr><td>Warunek wejścia</td><td>Cena testuje znane wsparcie/opór (rozdz. 4) drugi lub trzeci raz + RSI pokazuje wyraźną dywergencję (rozdz. 11) + potwierdzenie formacją świecową</td></tr>
+      <tr><td>Stop-loss</td><td>Tuż pod (long) lub nad (short) ostatnim ekstremum ceny</td></tr>
+      <tr><td>Take-profit</td><td>Środek zakresu / poprzedni istotny poziom po przeciwnej stronie</td></tr>
+      <tr><td>Najlepszy kontekst rynkowy</td><td>Rynek boczny lub w fazie wyraźnej korekty — w silnym, jednokierunkowym trendzie dywergencje potrafią utrzymywać się bardzo długo bez realnego odwrócenia</td></tr>
+    </table>
+  </section>
+
+  <section id="strat5">
+    <span class="eyebrow">Rozdział 49</span>
+    <h2>Strategia 5: Wyckoff Spring + Range Trade</h2>
+    <p>Bezpośrednie zastosowanie metody Wyckoffa (rozdział 22) — jedna z najstarszych, wciąż szeroko stosowanych koncepcji, na której zbudowana jest zresztą znaczna część nowoczesnego słownictwa SMC.</p>
+    <figure>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Strategia oparta na springu w fazie akumulacji Wyckoffa">
+        <line x1="0" y1="70" x2="560" y2="70" stroke="#e0685c" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <line x1="0" y1="150" x2="560" y2="150" stroke="#4fd68c" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <polyline points="10,110 50,90 90,130 130,95 170,140 210,100 240,175 270,130 310,80 350,50 390,30" fill="none" stroke="#e9efe9" stroke-width="2.2"/>
+        <circle cx="240" cy="175" r="5" fill="#e0b15c"/>
+        <text x="250" y="190" fill="#e0b15c" font-family="IBM Plex Mono" font-size="10">Spring — fałszywe przebicie dołka zakresu</text>
+        <circle cx="270" cy="130" r="5" fill="#4fd68c" stroke="#0c1210" stroke-width="1.5"/>
+        <text x="278" y="120" fill="#4fd68c" font-family="IBM Plex Mono" font-size="10">wejście po powrocie w zakres</text>
+      </svg>
+      <figcaption>Po dłuższym okresie akumulacji (boczny zakres) cena chwilowo przebija dolną granicę (spring), szybko wraca ponad nią, a następnie zaczyna fazę markup — silny trend wzrostowy.</figcaption>
+    </figure>
+    <table>
+      <tr><th>Element</th><th>Opis</th></tr>
+      <tr><td>Warunek wejścia</td><td>Wyraźna, wielotygodniowa faza akumulacji (rozdz. 22) + krótkotrwałe przebicie dolnej granicy na niskim wolumenie + szybki powrót ponad granicę zakresu na rosnącym wolumenie</td></tr>
+      <tr><td>Stop-loss</td><td>Tuż pod najniższym punktem springu</td></tr>
+      <tr><td>Take-profit</td><td>Górna granica zakresu akumulacji jako pierwszy cel; po jej przełamaniu — projekcja zasięgu markup na podstawie szerokości zakresu</td></tr>
+      <tr><td>Najlepszy kontekst rynkowy</td><td>Aktywa po długim trendzie spadkowym, wchodzące w fazę wyraźnej, wielotygodniowej konsolidacji — częste na dużych kryptowalutach po dnie bessy</td></tr>
+    </table>
+  </section>
+
+  <section id="ocena-strategii">
+    <span class="eyebrow">Rozdział 50</span>
+    <h2>Jak krytycznie oceniać "skuteczne strategie" (w tym Smart Money Concepts)</h2>
+    <p>Zanim zaufasz jakiejkolwiek strategii — także tym pięciu powyżej — warto przepuścić ją przez tę samą, uczciwą listę pytań.</p>
+    <ul>
+      <li><strong>Czy ktoś pokazał realny, zweryfikowany track record</strong> (np. potwierdzone wyniki konta), czy tylko atrakcyjnie wyglądające przykłady wybrane po fakcie ("cherry picking")? Strategia pokazana na 3 idealnych przykładach z przeszłości nic nie mówi o jej realnej skuteczności.</li>
+      <li><strong>Czy da się ją zapisać w jasnych, powtarzalnych regułach?</strong> Jeśli opis strategii brzmi "wyczuj, gdzie smart money planuje wejść" — to nie jest strategia, tylko subiektywna interpretacja, której nie da się rzetelnie przetestować (rozdział 21).</li>
+      <li><strong>Czy przetestowałeś ją sam, na własnych danych?</strong> Marketing wokół danej metody (szczególnie SMC/ICT w mediach społecznościowych) nie zastępuje samodzielnego backtestingu opisanego w rozdziale 21.</li>
+      <li><strong>Czy strategia ma sens fundamentalny, czy tylko "pasuje wstecz"?</strong> Wykres historyczny zawsze da się dopasować do dowolnej narracji post factum — prawdziwy test to sprawdzenie reguł "do przodu" (forward test), na świeżych danych, których nie widziałeś, tworząc regułę.</li>
+    </ul>
+    <div class="panel warn"><span class="label">Smart Money Concepts — sedno krytyki</span>Wiele pojęć SMC (order block, FVG, liquidity sweep) to w istocie nowe nazwy dla znacznie starszych obserwacji analizy technicznej (odpowiednio: strefa podażowo-popytowa, luka cenowa, fałszywe wybicie / pułapka). Nie czyni ich to bezużytecznymi — uczą przydatnego sposobu patrzenia na płynność i strukturę rynku — ale sprzedawane bywają jako rewolucyjna, "tajna" wiedza insiderów, co samo w sobie jest sygnałem ostrzegawczym. Żadna pojedyncza metoda, niezależnie od nazwy, nie eliminuje potrzeby zarządzania ryzykiem z rozdziału 14.</div>
+    <div class="panel"><span class="label">Praktyczna rekomendacja</span>Traktuj wszystkie pięć strategii z tego kursu jako <strong>punkt wyjścia do własnych testów</strong>, nie jako gotowe, pewne rozwiązania. Wybierz jedną, przetestuj ręcznie na min. 50 historycznych przykładach (rozdział 21), policz realny win rate i R:R na swoich danych, i dopiero wtedy rozważ handel niewielkim kapitałem.</div>
+  </section>
+
+  <section id="ai-wsparcie">
+    <span class="eyebrow">Rozdział 51</span>
+    <h2>Jak skutecznie wspierać się AI w nauce i tradingu</h2>
+    <p>Modele AI (jak Claude czy inne) mogą realnie przyspieszyć naukę i analizę, ale mają wyraźne granice, których warto być świadomym, żeby nie zbudować fałszywego poczucia bezpieczeństwa.</p>
+
+    <h3>Co warto łączyć z AI i dlaczego</h3>
+    <table>
+      <tr><th>Zadanie</th><th>Dlaczego warto łączyć z AI</th></tr>
+      <tr><td>Wyjaśnianie pojęć i formacji</td><td>AI świetnie tłumaczy teorię, odpowiada na pytania "dlaczego", dopasowuje poziom wyjaśnienia do Twojej wiedzy — szybciej niż przeszukiwanie forów</td></tr>
+      <tr><td>Analiza wklejonego wykresu (screenshot)</td><td>AI potrafi wskazać widoczne na obrazku poziomy, formacje czy układ wskaźników — dobry "drugi zestaw oczu" do sprawdzenia własnej analizy</td></tr>
+      <tr><td>Podsumowywanie newsów i wydarzeń makro</td><td>AI z dostępem do wyszukiwania (jak w tej rozmowie) potrafi szybko zebrać i streścić aktualny kontekst fundamentalny, który warto zestawić z analizą techniczną (rozdz. 1, zasada 1)</td></tr>
+      <tr><td>Pisanie/organizowanie dziennika transakcji</td><td>AI może pomóc ustrukturyzować dziennik (rozdz. 28), a nawet wychwycić powtarzające się wzorce błędów, jeśli regularnie wklejasz mu swoje wpisy</td></tr>
+      <tr><td>Kod do backtestingu</td><td>Do rzetelnego sprawdzenia strategii (rozdz. 21, 50) warto połączyć AI z narzędziem do analizy danych/kodu — AI napisze skrypt liczący win rate i R:R na historycznych danych szybciej niż ręczne liczenie w Excelu</td></tr>
+      <tr><td>Nauka poprzez pytania i quizy</td><td>Poproszenie AI o wygenerowanie dodatkowych pytań sprawdzających (podobnych do rozdziału 43) na podstawie własnych słabych punktów utrwala wiedzę skuteczniej niż samo czytanie</td></tr>
+    </table>
+
+    <h3>Czego AI nie powinno robić za Ciebie</h3>
+    <div class="panel warn">
+      <span class="label">Twarda granica</span>
+      <ul style="margin-top:6px;">
+        <li>AI nie powinno dawać konkretnych sygnałów "kupuj teraz / sprzedawaj teraz" — żaden model nie ma dostępu do przyszłości, a pewność brzmienia odpowiedzi nie oznacza pewności wyniku</li>
+        <li>AI nie zastąpi samodzielnego backtestingu na Twoich własnych kryteriach wejścia — może pomóc go <em>wykonać</em>, ale decyzję, co testować, musisz podjąć Ty</li>
+        <li>AI analizujące pojedynczy zrzut ekranu widzi mniej niż Ty na żywym wykresie — nie ma dostępu do pełnej historii, wolumenu w czasie rzeczywistym ani order booka, więc jego analiza wykresu jest zawsze uproszczona</li>
+        <li>AI nie zna Twojej realnej tolerancji na ryzyko ani sytuacji finansowej — decyzje o wielkości pozycji (rozdz. 14, 27) muszą pozostać Twoje</li>
+      </ul>
+    </div>
+
+    <h3>Dobry nawyk: AI jako "sparingpartner", nie wyrocznia</h3>
+    <p>Najskuteczniejszy sposób korzystania z AI w nauce tradingu to zadawanie pytań w stylu: <em>"Oto mój plan wejścia — jakich scenariuszy nie uwzględniłem?"</em> albo <em>"Wytłumacz mi, dlaczego ta formacja mogła nie zadziałać"</em>, zamiast <em>"Czy powinienem teraz kupić?"</em>. Pierwsze podejście buduje Twoje własne umiejętności analityczne (dokładnie to, czego uczy ten kurs); drugie tworzy zależność od narzędzia, które — tak jak Ty — nie zna przyszłości.</p>
+  </section>
+
+  <section id="slownik">
+    <span class="eyebrow">Rozdział 52</span>
+    <h2>Słowniczek pojęć</h2>
+    <table>
+      <tr><th>Pojęcie</th><th>Znaczenie</th></tr>
+      <tr><td>Higher High / Higher Low</td><td>Coraz wyższe szczyty/dołki — charakterystyka trendu wzrostowego</td></tr>
+      <tr><td>Breakout</td><td>Wybicie ceny poza istotny poziom wsparcia/oporu lub formację</td></tr>
+      <tr><td>Fakeout / Bull-trap / Bear-trap</td><td>Fałszywe wybicie, po którym cena szybko wraca do poprzedniego zakresu</td></tr>
+      <tr><td>Dywergencja</td><td>Rozbieżność między kierunkiem ceny a kierunkiem wskaźnika (np. RSI)</td></tr>
+      <tr><td>Retest</td><td>Powrót ceny do przełamanego poziomu w celu jego "sprawdzenia" od nowej strony</td></tr>
+      <tr><td>Konsolidacja</td><td>Okres bocznego ruchu ceny, brak wyraźnego trendu</td></tr>
+      <tr><td>Zmienność (volatility)</td><td>Skala i tempo wahań ceny w danym okresie</td></tr>
+      <tr><td>Dominacja BTC</td><td>Udział kapitalizacji Bitcoina w całym rynku kryptowalut</td></tr>
+      <tr><td>Fraktalność (Elliott)</td><td>Powtarzanie się tego samego wzorca fal niezależnie od interwału czasowego</td></tr>
+      <tr><td>Expectancy</td><td>Oczekiwana wartość statystyczna pojedynczej transakcji w danej strategii</td></tr>
+      <tr><td>Drawdown</td><td>Maksymalny spadek wartości kapitału od lokalnego szczytu</td></tr>
+      <tr><td>Spring (Wyckoff)</td><td>Fałszywe przebicie dołka zakresu akumulacji, szybko odrzucone przez rynek</td></tr>
+      <tr><td>Kumo</td><td>"Chmura" w systemie Ichimoku, wyznaczająca dynamiczną strefę wsparcia/oporu</td></tr>
+      <tr><td>VWAP</td><td>Średnia cena ważona wolumenem w danej sesji</td></tr>
+      <tr><td>Win rate</td><td>Odsetek transakcji zakończonych zyskiem</td></tr>
+      <tr><td>ATR</td><td>Przeciętny zakres wahań ceny w ostatnich N okresach — miara zmienności</td></tr>
+      <tr><td>Swing point</td><td>Lokalny, wyraźny szczyt lub dołek na wykresie</td></tr>
+      <tr><td>Trailing stop</td><td>Stop-loss przesuwany wraz z ruchem ceny na korzyść pozycji</td></tr>
+      <tr><td>POC (Point of Control)</td><td>Poziom cenowy z największym wolumenem na profilu wolumenu</td></tr>
+      <tr><td>Value Area</td><td>Strefa cenowa obejmująca ok. 70% obrotu na profilu wolumenu</td></tr>
+      <tr><td>Funding Rate</td><td>Okresowa opłata między posiadaczami long i short na kontraktach wieczystych</td></tr>
+      <tr><td>Open Interest</td><td>Suma wszystkich aktualnie otwartych kontraktów na danym rynku</td></tr>
+      <tr><td>Exchange Netflow</td><td>Bilans monet wpływających i wypływających z giełd kryptowalut</td></tr>
+      <tr><td>Risk of Ruin</td><td>Prawdopodobieństwo praktycznego zrujnowania konta przy danej strategii</td></tr>
+      <tr><td>Order Block</td><td>Ostatnia świeca przeciwna do kierunku ruchu, tuż przed silnym impulsem cenowym (SMC)</td></tr>
+      <tr><td>Fair Value Gap (FVG)</td><td>Luka cenowa między trzema świecami silnego impulsu, którą cena często "wypełnia"</td></tr>
+      <tr><td>BOS / CHoCH</td><td>Break of Structure (kontynuacja trendu) / Change of Character (pierwszy sygnał zmiany trendu)</td></tr>
+      <tr><td>Liquidity Sweep</td><td>Chwilowe przebicie poziomu w celu "zebrania" zleceń stop-loss, po którym cena zawraca</td></tr>
+    </table>
+  </section>
+
+  <section id="podsumowanie">
+    <span class="eyebrow">Rozdział 53</span>
+    <h2>Podsumowanie i dalsze kroki</h2>
+    <p>Analiza techniczna to język opisujący zachowanie tłumu na rynku. Trend mówi, w którą stronę tłum aktualnie zmierza. Wsparcie i opór pokazują, gdzie tłum wcześniej zmieniał zdanie — a rozdziały praktyczne (29, 31, 32) pokazały Ci dokładnie, jak samodzielnie znaleźć te poziomy i przełożyć je na konkretny SL i TP na wykresie. Formacje świecowe, cenowe i harmoniczne to powtarzalne wzorce tej samej psychologii. Fibonacci, średnie, wstęgi Bollingera, Ichimoku, SAR, VWAP i ATR dodają do tego pomiar tempa, siły i zmienności. Alternatywne style wykresów — Heikin-Ashi, Renko, Point & Figure — pomagają odciąć szum i zobaczyć czystą strukturę trendu. Profil wolumenu, order book i order flow pokazują, gdzie realnie leży podaż i popyt. Fale Elliotta i metoda Wyckoffa próbują uchwycić rytm i logikę dużych graczy, a specyficzne dla krypto Funding Rate, Open Interest i wskaźniki on-chain dają wgląd niedostępny na klasycznych rynkach. Studium przypadku w rozdziale 33 pokazało, jak połączyć to wszystko w jeden, spójny proces decyzyjny. Na koniec — plan tradingowy, position sizing, Risk of Ruin, dziennik transakcji i backtesting decydują, czy cała ta wiedza w ogóle przełoży się na przetrwanie na rynku.</p>
+    <div class="tag-row">
+      <span class="tag">Teoria Dowa</span><span class="tag">trend</span><span class="tag">wsparcie/opór</span><span class="tag">świece</span>
+      <span class="tag">formacje odwrócenia</span><span class="tag">formacje kontynuacji</span><span class="tag">formacje harmoniczne</span><span class="tag">Fibonacci</span>
+      <span class="tag">średnie kroczące</span><span class="tag">Bollinger</span><span class="tag">RSI</span><span class="tag">MACD</span>
+      <span class="tag">Stochastic</span><span class="tag">ADX</span><span class="tag">wolumen</span><span class="tag">multi-timeframe</span>
+      <span class="tag">fale Elliotta</span><span class="tag">Point & Figure</span><span class="tag">Renko</span><span class="tag">Heikin-Ashi</span><span class="tag">analiza międzyrynkowa</span>
+      <span class="tag">cykle</span><span class="tag">luki cenowe</span><span class="tag">plan tradingowy</span><span class="tag">backtesting</span>
+      <span class="tag">Wyckoff</span><span class="tag">Ichimoku</span><span class="tag">Parabolic SAR</span><span class="tag">Pivot Points</span>
+      <span class="tag">VWAP</span><span class="tag">Kelly Criterion</span><span class="tag">dziennik transakcji</span><span class="tag">ATR</span>
+      <span class="tag">rysowanie wsparć/oporów</span><span class="tag">SL/TP</span><span class="tag">czytanie wskaźników</span>
+      <span class="tag">Volume Profile</span><span class="tag">order book</span><span class="tag">funding rate</span><span class="tag">open interest</span>
+      <span class="tag">on-chain</span><span class="tag">korelacja</span><span class="tag">risk of ruin</span><span class="tag">risk management</span>
+    </div>
+    <h3>Jak ćwiczyć dalej</h3>
+    <ul>
+      <li>Otwórz darmowe konto demo (np. w XTB) i "przeklikaj" 20–30 przykładów formacji na realnych wykresach historycznych.</li>
+      <li>Prowadź dziennik transakcji — zapisuj, dlaczego wszedłeś w pozycję i czy scenariusz się potwierdził.</li>
+      <li>Zestawiaj analizę techniczną z kontekstem fundamentalnym — szczególnie ważne przy kryptowalutach i wokół dużych wydarzeń makro.</li>
+      <li>Analizuj wiele interwałów naraz, zamiast skupiać się wyłącznie na jednym wykresie.</li>
+      <li>Wracaj do jednego-dwóch wskaźników na raz — łączenie zbyt wielu narzędzi naraz częściej prowadzi do paraliżu decyzyjnego niż do lepszych sygnałów.</li>
+    </ul>
+  </section>
+
+</main>
+</div>
+
+<footer>
+  <p>Materiał ma charakter edukacyjny i stanowi autorskie opracowanie klasycznych, ogólnodostępnych zasad analizy technicznej — nie jest rekomendacją inwestycyjną ani przedrukiem żadnej konkretnej publikacji. Handel instrumentami finansowymi wiąże się z ryzykiem utraty kapitału.</p>
+</footer>
+
+<script>
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    var bar = document.getElementById('prog');
+    if(bar){ bar.style.width = scrolled + '%'; }
+  });
+</script>
+</body>
+</html>
