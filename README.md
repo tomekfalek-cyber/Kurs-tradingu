@@ -1,0 +1,2 @@
+# Kurs-tradingu
+Kurs
