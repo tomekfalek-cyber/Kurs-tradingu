@@ -1,6 +1,7 @@
 # Kurs Analizy Technicznej — Pełne Szkolenie
 
 Autorski, kompletny kurs analizy technicznej rynków finansowych po polsku, w formie samodzielnej strony HTML.
+https://tomekfalek-cyber.github.io/Kurs-tradingu/ 
 
 ## Zawartość
 
